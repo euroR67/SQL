@@ -15,7 +15,7 @@
             // requête pour récupérer les films
             $requete = $pdo->query("
                 SELECT titre, annee_sortie
-                FROM film
+                FROM film;
             ");
 
             // on relie la vue qui nous intéresse(située dans le dossier view)
@@ -31,7 +31,7 @@
             $requete = $pdo->prepare("
                 SELECT *
                 FROM acteur
-                WHERE id_acteur = :id
+                WHERE id_acteur = :id;
             ");
             // on exécute la requête en passant l'id en paramètre
             $requete->execute(["id" => $id]);

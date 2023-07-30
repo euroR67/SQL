@@ -21,7 +21,7 @@ header {
     position: relative;
 }
 
-.logo {
+.logo a{
     color: #fff;
     font-size: 2.5em;
     font-weight: 700;
@@ -125,6 +125,49 @@ nav ul li a {
 
 /* =================== FIN HEADER & BURGER MENU =================== */
 
+/* =================== début HOMEPAGE.PHP ===================== */
+
+.decouverte {
+    background-image: url(../img/fond1.jpg);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.decouverte h3 {
+    color: #e4d804;
+    margin-top: 3em;
+    font-weight: 800;
+    font-size: 24px;
+}
+
+.decouverte span {
+    color: #e4d804;
+    font-weight: 800;
+}
+
+.decouverte p {
+    color: #fff;
+    font-size: 32px;
+    font-weight: 600;
+    margin-block: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.decouverte a {
+    color: #fff;
+    background-color: #12151e;
+    padding: 16px 34px;
+    border-radius: 50px;
+    border: 2px solid #e4d804;
+    text-transform: uppercase;
+    width: fit-content;
+    margin-block: 30px;
+}
+
+/* =================== fin HOMEPAGE.PHP */
+
 /* =================== DEBUT FOOTER =================== */
 
 footer {
@@ -132,7 +175,7 @@ footer {
     padding: 20px;
 }
 
-.contact div, p{
+.contact div, .contact p {
     display: flex;
     font-size: 1em;
     color: #fff;
