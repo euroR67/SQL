@@ -1,0 +1,144 @@
+/* =================== Global reset =================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+/* =================== DEBUT Header =================== */
+
+header {
+    background-color: #22232B;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.logo {
+    color: #fff;
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+.logo div {
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
+    font-weight: 700;
+}
+
+.logo img {
+    width: 50px;
+}
+
+svg {
+    width: 40px;
+}
+
+/* =================== DEBUT BURGER OPEN =================== */
+
+.logo_burger {
+    color: #fff;
+    font-size: 2.5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo_burger div {
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
+    font-weight: 700;
+}
+
+.logo_burger div img {
+    width: 50px;
+    height: 42px;
+}
+
+nav {
+    background-color: #171d22;
+    position: fixed;
+    right: -75%;
+    top: 0;
+    width: 75%;
+    height: 100vh;
+    transition: all 0.8s;
+    z-index: 2;
+    opacity: 0;
+}
+
+.active-nav {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #171d22;
+    width: 75%;
+    height: 100vh;
+    opacity: 1;
+    transition: 0.8s;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: column;
+}
+
+nav ul li {
+    border-top: 1px solid #474747a4;
+    width: 100%;
+    padding-block: 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    padding-inline: 20px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background-color: #171d22;
+    z-index: 1; 
+    transition: all 700ms ease-in-out;
+    visibility: hidden;
+}
+
+.active-overlay {
+    display: block;
+    opacity: 0.80;
+    visibility: visible;
+  }
+
+/* =================== FIN HEADER & BURGER MENU =================== */
+
+/* =================== DEBUT FOOTER =================== */
+
+footer {
+    background-image: url(../img/fond_footer.jpg);
+    padding: 20px;
+}
+
+.contact div, p{
+    display: flex;
+    font-size: 1em;
+    color: #fff;
+    padding-block: 5px;
+    gap: 5px;
+    align-items: center;
+}
+
+/* =================== FIN FOOTER =================== */
