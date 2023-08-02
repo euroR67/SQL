@@ -15,6 +15,7 @@
                             YEAR(date_sortie) AS annee,
                             CONCAT(FLOOR(duree_minute / 60), 'h', LPAD(MOD(duree_minute, 60), 2, '0')) AS duree,
                             note,
+                            id_film,
                             affiche
                             FROM film
                             ORDER BY YEAR(date_sortie) DESC
@@ -32,7 +33,7 @@
                             YEAR(date_sortie) AS annee,
                             CONCAT(FLOOR(duree_minute / 60), 'h', LPAD(MOD(duree_minute, 60), 2, '0')) AS duree,
                             note,
-                            affiche
+                            affiche,id_film
                             FROM film");
 
             // on relie la vue qui nous intéresse(située dans le dossier view)
@@ -49,7 +50,7 @@
             $requeteFilm = $pdo->prepare("
                     SELECT  f.titre,
                     f.affiche,
-                    f.date_sortie,
+                    DATE_FORMAT(f.date_sortie, '%d/%m/%Y') AS date_sortie,
                     CONCAT(FLOOR(f.duree_minute / 60), 'h', LPAD(MOD(f.duree_minute, 60), 2, '0')) AS duree,
                     f.note,
                     f.synopsis,
@@ -66,18 +67,28 @@
             $requeteFilm->execute(["id" => $id]);
 
             $requeteCasting = $pdo->prepare("
-                    SELECT r.role_jouer, CONCAT(p.nom, ' ', p.prenom ,' ') AS info_acteur
+                    SELECT r.role_jouer, CONCAT(p.prenom, ' ', p.nom ,' ') AS info_acteur
                     FROM film f
                     INNER JOIN jouer j ON j.id_film = f.id_film
                     INNER JOIN role r ON r.id_role = j.id_role
                     INNER JOIN acteur a ON a.id_acteur = j.id_acteur
                     INNER JOIN personne p ON p.id_personne = a.id_personne
-                    WHERE f.id_film;
+                    WHERE f.id_film= :id;
             ");
             // on exécute la requête casting en passant l'id en paramètre
             $requeteCasting->execute(["id" => $id]);
 
-            require "view/detailActeur.php";
+            $requeteGenre = $pdo->prepare("
+                    SELECT g.libelle, f.id_film, f.titre
+                    FROM film f
+                    INNER JOIN contenir c ON f.id_film = c.id_film
+                    INNER JOIN genre g ON c.id_genre = g.id_genre
+                    WHERE f.id_film = :id;
+            ");
+            // on exécute la requête genre en passant l'id en paramètre
+            $requeteGenre->execute(["id" => $id]);
+
+            require "view/detailFilm.php";
 
         }
     }

@@ -12,7 +12,7 @@
         <div class="film-card">
             <?php foreach ($requete->fetchAll() as $film) { ?>
                 <div class="card">
-                    <a href="index.php?action=detailFilm&id=<?= $film["id-film"] ?>">
+                    <a href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">
                         <img src="public/img/<?= $film["affiche"] ?>" alt="Word War Z">
                     </a>
                     <div class="titre-date">

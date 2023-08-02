@@ -231,6 +231,21 @@ nav ul li a {
 
 /* =================== fin HOMEPAGE.PHP =================== */
 
+/* =================== début DETAILFILM.PHP =================== */
+
+.detail {
+    background: url(../img/fond_formulaire.jpg) center/cover no-repeat;
+    padding: 20px;
+    color: #fff;
+}
+
+.detail img {
+    width: 100%;
+    height: auto;
+}
+
+/* =================== fin DETAILFILM.PHP =================== */
+
 /* =================== DEBUT FOOTER =================== */
 
 footer {

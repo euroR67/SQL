@@ -17,7 +17,7 @@
             case "listTop4" : $ctrlCinema->listTop4(); break;
             case "listFilms" : $ctrlCinema->listFilms(); break;
             case "listActeurs" : $ctrlCinema->listActeurs(); break;
-            case "detailFilm": $ctrlCinema->detailFilm($id); break;
+            case "detailFilm": $ctrlCinema->detailFilm($_GET["id"]); break;
         }
     }
     
