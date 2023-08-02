@@ -45,6 +45,7 @@
 
             $pdo = Connect::seConnecter();
             // on prépare la requête
+            // Requête pour récuperer infos d'un film
             $requeteFilm = $pdo->prepare("
                     SELECT  f.titre,
                     f.affiche,
@@ -59,10 +60,22 @@
                     INNER JOIN role r ON r.id_role = j.id_role
                     INNER JOIN realisateur re ON re.id_realisateur = f.id_realisateur
                     INNER JOIN personne p ON p.id_personne = re.id_personne
+                    WHERE f.id_film = :id;
+            ");
+            // on exécute la requête film en passant l'id en paramètre
+            $requeteFilm->execute(["id" => $id]);
+
+            $requeteCasting = $pdo->prepare("
+                    SELECT r.role_jouer, CONCAT(p.nom, ' ', p.prenom ,' ') AS info_acteur
+                    FROM film f
+                    INNER JOIN jouer j ON j.id_film = f.id_film
+                    INNER JOIN role r ON r.id_role = j.id_role
+                    INNER JOIN acteur a ON a.id_acteur = j.id_acteur
+                    INNER JOIN personne p ON p.id_personne = a.id_personne
                     WHERE f.id_film;
             ");
-            // on exécute la requête en passant l'id en paramètre
-            $requete->execute(["id" => $id]);
+            // on exécute la requête casting en passant l'id en paramètre
+            $requeteCasting->execute(["id" => $id]);
 
             require "view/detailActeur.php";
 
