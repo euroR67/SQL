@@ -7,6 +7,20 @@
     // on crée une classe CinemaController
     class CinemaController {
 
+        public function listTop4() {
+            $pdo = Connect::seConnecter();
+
+            $requete = $pdo->query("
+                            SELECT titre,
+                            YEAR(date_sortie) AS annee,
+                            CONCAT(FLOOR(duree_minute / 60), 'h', LPAD(MOD(duree_minute, 60), 2, '0')) AS duree,
+                            note,
+                            affiche
+                            FROM film
+                            ORDER BY YEAR(date_sortie) DESC
+                            LIMIT 4");
+            require "view/homepage.php";
+        }
         // méthode pour afficher la liste des films
         public function listFilms() {
 
@@ -14,24 +28,38 @@
             $pdo = Connect::seConnecter();
             // requête pour récupérer les films
             $requete = $pdo->query("
-                SELECT titre, annee_sortie
-                FROM film;
-            ");
+                            SELECT titre,
+                            YEAR(date_sortie) AS annee,
+                            CONCAT(FLOOR(duree_minute / 60), 'h', LPAD(MOD(duree_minute, 60), 2, '0')) AS duree,
+                            note,
+                            affiche
+                            FROM film");
 
             // on relie la vue qui nous intéresse(située dans le dossier view)
-            require "view/listFilms.php";
+            require "view/films.php";
 
         }
 
         // méthode pour afficher les détails d'un acteur
-        public function detailActeur($id) {
+        public function detailFilm($id) {
 
             $pdo = Connect::seConnecter();
             // on prépare la requête
-            $requete = $pdo->prepare("
-                SELECT *
-                FROM acteur
-                WHERE id_acteur = :id;
+            $requeteFilm = $pdo->prepare("
+                    SELECT  f.titre,
+                    f.affiche,
+                    f.date_sortie,
+                    CONCAT(FLOOR(f.duree_minute / 60), 'h', LPAD(MOD(f.duree_minute, 60), 2, '0')) AS duree,
+                    f.note,
+                    f.synopsis,
+                    CONCAT(p.nom, ' ', p.prenom, ' ') AS info_realisateur,
+                    r.role_jouer
+                    FROM film f
+                    INNER JOIN jouer j ON j.id_film = f.id_film
+                    INNER JOIN role r ON r.id_role = j.id_role
+                    INNER JOIN realisateur re ON re.id_realisateur = f.id_realisateur
+                    INNER JOIN personne p ON p.id_personne = re.id_personne
+                    WHERE f.id_film;
             ");
             // on exécute la requête en passant l'id en paramètre
             $requete->execute(["id" => $id]);

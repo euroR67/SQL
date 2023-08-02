@@ -166,7 +166,70 @@ nav ul li a {
     margin-block: 30px;
 }
 
-/* =================== fin HOMEPAGE.PHP */
+/* =================== SECTION TOP 4 =================== */
+
+.top4 {
+    background: url(../img/fond2.jpg) center/cover no-repeat;
+    padding-inline: 10px;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.top4 > h2 {
+    color: #fff;
+    text-align: center;
+    padding-block: 20px;
+}
+
+.card h2 {
+    color: white;
+}
+
+.card {
+    width: 80%;
+    margin-inline: auto;
+    background-color: #22232B;
+    margin-bottom: 20px;
+}
+
+.card img {
+    width: 100%;
+    height: 400px;
+}
+
+.card .titre-date p {
+    color: #e4d804;
+}
+
+.card .titre-date {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 10px;
+}
+
+.card .duree_note {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 10px;
+}
+
+.duree_note > p {
+    color: #e4d804;
+    border: 1px solid rgba(128, 128, 128, 0.503);
+}
+
+.card .duree_note div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    padding-block: 5px;
+}
+
+/* =================== fin HOMEPAGE.PHP =================== */
 
 /* =================== DEBUT FOOTER =================== */
 
@@ -182,6 +245,18 @@ footer {
     padding-block: 5px;
     gap: 5px;
     align-items: center;
+}
+
+.logo-footer div {
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+.logo-footer div img {
+    width: 50px;
 }
 
 /* =================== FIN FOOTER =================== */

@@ -1,8 +1,5 @@
 <!-- Début d'enregistrement -->
-<?php 
-    ob_start();
-    $titre_secondaire = "Liste des films";
-?>
+<?php ob_start();?>
 
 
 <main>
@@ -12,9 +9,7 @@
         <div class="film-card">
             <?php foreach ($requete->fetchAll() as $film) { ?>
                 <div class="card">
-                    <a href="index.php?action=detailFilm&id=<?= $film["id-film"] ?>">
-                        <img src="public/img/<?= $film["affiche"] ?>" alt="Word War Z">
-                    </a>
+                    <img src="public/img/<?= $film["affiche"] ?>" alt="Word War Z">
                     <div class="titre-date">
                         <h2><?= $film["titre"] ?></h2>
                         <p><?= $film["annee"] ?></p>
@@ -36,7 +31,9 @@
 
 <?php 
     // on stock le titre de la page dans une variable
-    $titre = "Liste des films";
+    $titre = "Détail du film " . $film["titre"];
+    // on stock le titre secondaire de la page dans une variable
+    $titre_secondaire = "Liste des films";
     // fin d'enregistrement
     // on stock le contenu de la page dans une variable
     $contenu = ob_get_clean();

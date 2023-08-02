@@ -14,6 +14,7 @@
     if(isset($_GET["action"])) {
         // en fonction de l'action on appelle la méthode du controller
         switch ($_GET["action"]) {
+            case "listTop4" : $ctrlCinema->listTop4(); break;
             case "listFilms" : $ctrlCinema->listFilms(); break;
             case "listActeurs" : $ctrlCinema->listActeurs(); break;
             case "detailFilm": $ctrlCinema->detailFilm($id); break;
