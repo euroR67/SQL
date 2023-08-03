@@ -79,11 +79,13 @@
             $requeteCasting->execute(["id" => $id]);
 
             $requeteGenre = $pdo->prepare("
-                    SELECT g.libelle, f.id_film, f.titre
+                    SELECT f.id_film,
+                    GROUP_CONCAT(g.libelle SEPARATOR ', ') AS libelle
                     FROM film f
                     INNER JOIN contenir c ON f.id_film = c.id_film
                     INNER JOIN genre g ON c.id_genre = g.id_genre
-                    WHERE f.id_film = :id;
+                    WHERE f.id_film= :id;
+                    GROUP BY f.id_film;
             ");
             // on exécute la requête genre en passant l'id en paramètre
             $requeteGenre->execute(["id" => $id]);
@@ -104,11 +106,24 @@
             require "view/acteurs.php";
         }
 
-        public function detailActeur() {
+        public function detailActeur($id) {
             $pdo = Connect::seConnecter();
-            $requeteActeur = $pdo->query("
-                            
+            $requeteActeur = $pdo->prepare("
+                            SELECT CONCAT(p.prenom, ' ', p.nom) AS info_acteur,
+                            p.photo,
+                            DATE_FORMAT(p.date_de_naissance, '%d/%m/%Y') AS date_de_naissance,
+                            p.biographie,
+                            a.id_acteur,
+                            GROUP_CONCAT(f.titre SEPARATOR ', ') AS films_jouer
+                            FROM personne p
+                            INNER JOIN acteur a ON a.id_personne = p.id_personne
+                            LEFT JOIN jouer j ON j.id_acteur = a.id_acteur
+                            LEFT JOIN film f ON f.id_film = j.id_film
+                            WHERE a.id_acteur = :id;
+                            GROUP BY a.id_acteur
             ");
+            $requeteActeur->execute(["id" => $id]);
+            require "view/detailActeur.php";
         }
     }
 
