@@ -20,6 +20,7 @@
             case "listActeurs" : $ctrlCinema->listActeurs(); break;
             case "detailActeur" : $ctrlCinema->detailActeur($id); break;
             case "ajouterGenre" : $ctrlCinema->ajouterGenre(); break;
+            case "filmsParGenre" : $ctrlCinema->filmsParGenre($id); break;
         }
     }
     

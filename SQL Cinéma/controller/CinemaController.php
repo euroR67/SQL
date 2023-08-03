@@ -141,6 +141,18 @@
         
             require "view/ajoutGenre.php";
         }
+
+        public function filmsParGenre($id){
+            $pdo = Connect::seConnecter();
+            $requeteGenre = $pdo->prepare("
+                            SELECT f.id_film, f.titre, f.date_sortie, f.duree_minute, f.affiche, f.note, f.synopsis
+                            FROM FILM f
+                            INNER JOIN contenir c ON f.id_film = c.id_film
+                            WHERE c.id_genre = :id;
+            ");
+            $requeteGenre->execute(["id" => $id]);
+            require "view/filmsParGenre.php";
+        }
         
         
         
