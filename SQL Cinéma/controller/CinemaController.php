@@ -91,6 +91,25 @@
             require "view/detailFilm.php";
 
         }
+
+        public function listActeurs() {
+            $pdo = Connect::seConnecter();
+            $requeteActeurs = $pdo->query("
+                            SELECT CONCAT(p.prenom, ' ', p.nom ,' ') AS info_acteur,
+                            p.photo,
+                            a.id_acteur
+                            FROM personne p
+                            INNER JOIN acteur a ON a.id_personne = p.id_personne
+            ");
+            require "view/acteurs.php";
+        }
+
+        public function detailActeur() {
+            $pdo = Connect::seConnecter();
+            $requeteActeur = $pdo->query("
+                            
+            ");
+        }
     }
 
 ?>

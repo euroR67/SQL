@@ -13,7 +13,7 @@
     <header>
         <!-- Logo -->
         <div class="logo">
-            <a href="/SQL%20Cinéma/index.php?action=listTop4">
+            <a href="index.php?action=listTop4">
                 <div>
                     <img src="public/img/logo.png" alt="logo">
                     Movflix
@@ -34,12 +34,12 @@
             </div>
             <!-- Liste des liens du menu burger -->
             <ul>
-                <li><a href="/SQL%20Cinéma/index.php?action=listTop4">Accueil</a></li>
-                <li><a href="/SQL%20Cinéma/index.php?action=listFilms">Films</a></li>
-                <li><a href="/SQL%20Cinéma/index.php?action=listRoles">Roles</a></li>
-                <li><a href="/SQL%20Cinéma/index.php?action=listActeurs">Acteurs</a></li>
-                <li><a href="/SQL%20Cinéma/index.php?action=listRealisateurs">Realisateurs</a></li>
-                <li><a href="/SQL%20Cinéma/index.php?action=ajouter">Ajouter</a></li>
+                <li><a href="index.php?action=listTop4">Accueil</a></li>
+                <li><a href="index.php?action=listFilms">Films</a></li>
+                <li><a href="index.php?action=listRoles">Roles</a></li>
+                <li><a href="index.php?action=listActeurs">Acteurs</a></li>
+                <li><a href="index.php?action=listRealisateurs">Realisateurs</a></li>
+                <li><a href="index.php?action=ajouter">Ajouter</a></li>
             </ul>
         </nav>
         <!-- Fond obscure lorsque le menu burger est ouvert -->
