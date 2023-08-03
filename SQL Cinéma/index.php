@@ -16,9 +16,10 @@
         switch ($_GET["action"]) {
             case "listTop4" : $ctrlCinema->listTop4(); break;
             case "listFilms" : $ctrlCinema->listFilms(); break;
-            case "detailFilm": $ctrlCinema->detailFilm($id); break;
+            case "detailFilm" : $ctrlCinema->detailFilm($id); break;
             case "listActeurs" : $ctrlCinema->listActeurs(); break;
-            case "detailActeur": $ctrlCinema->detailActeur($id); break;
+            case "detailActeur" : $ctrlCinema->detailActeur($id); break;
+            case "ajouterGenre" : $ctrlCinema->ajouterGenre(); break;
         }
     }
     

@@ -1,5 +1,8 @@
 <!-- Début d'enregistrement -->
-<?php ob_start();?>
+<?php 
+    ob_start();
+    session_start();
+?>
 
 
 <main>
