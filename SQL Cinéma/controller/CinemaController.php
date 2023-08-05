@@ -95,6 +95,39 @@
         }
 
         // méthode pour afficher la liste des réalisateurs
+        public function listRealisateurs() {
+            $pdo = Connect::seConnecter();
+            $requeteRealisateurs = $pdo->query("
+                            SELECT CONCAT(p.prenom, ' ', p.nom) AS info_realisateur,
+                            p.photo,
+                            r.id_realisateur
+                            FROM personne p
+                            INNER JOIN realisateur r ON r.id_personne = p.id_personne
+            ");
+            require "view/realisateurs.php";
+        }
+
+        // méthode pour afficher les détails d'un réalisateur
+        public function detailRealisateur($id) {
+            $pdo = Connect::seConnecter();
+            $requeteRealisateur = $pdo->prepare("
+                            SELECT CONCAT(p.prenom, ' ', p.nom) AS info_realisateur,
+                            p.photo,
+                            DATE_FORMAT(p.date_de_naissance, '%d/%m/%Y') AS date_de_naissance,
+                            p.biographie,
+                            r.id_realisateur,
+                            GROUP_CONCAT(f.titre SEPARATOR ', ') AS films_realiser
+                            FROM personne p
+                            INNER JOIN realisateur r ON r.id_personne = p.id_personne
+                            LEFT JOIN film f ON f.id_realisateur = r.id_realisateur
+                            WHERE r.id_realisateur = :id;
+                            GROUP BY r.id_realisateur
+            ");
+            $requeteRealisateur->execute(["id" => $id]);
+            require "view/detailRealisateur.php";
+        }
+
+        // méthode pour afficher la liste des réalisateurs
         public function listActeurs() {
             $pdo = Connect::seConnecter();
             $requeteActeurs = $pdo->query("
@@ -128,7 +161,7 @@
             require "view/detailActeur.php";
         }
 
-        // méthode pour afficher la liste des réalisateurs
+        // méthode pour ajouter un genre
         public function ajouterGenre() {
             if(isset($_POST["submit"])){
                 $pdo = Connect::seConnecter();
@@ -136,13 +169,21 @@
                             INSERT INTO genre(libelle)
                             VALUES (:name)
                 ");
-                $requeteAjoutGenre->execute(['name' => $_POST['name']]);
+                $requeteAjoutGenre->execute([
+                    'name' => $_POST['name']
+                ]);
                 $newId = $pdo->lastInsertId();
                 header("Location:index.php?action=detailGenre&id=".$newId);
                 die;
             }
         
             require "view/ajoutGenre.php";
+        }
+
+        // méthode pour ajouter un film
+        public function ajouterFilm() {
+            
+            require "view/ajoutFilm.php";
         }
 
         // méthode pour afficher les films par genre
@@ -168,6 +209,7 @@
             require "view/genres.php";
         }
 
+        // méthode pour afficher les détails d'un genre
         public function detailGenre($id) {
 
             $pdo = Connect::seConnecter();
@@ -206,6 +248,7 @@
             require "view/roles.php";
         }
 
+        // méthode pour afficher les détails d'un rôle
         public function detailRole($id) {
             $pdo = Connect::seConnecter();
             // on prépare la requête qui va nous permettre de récupérer les infos du role

@@ -19,12 +19,15 @@
             case "detailFilm" : $ctrlCinema->detailFilm($id); break;
             case "listActeurs" : $ctrlCinema->listActeurs(); break;
             case "detailActeur" : $ctrlCinema->detailActeur($id); break;
-            case "ajouterGenre" : $ctrlCinema->ajouterGenre(); break;
+            case "listRealisateurs" : $ctrlCinema->listRealisateurs(); break;
+            case "detailRealisateur" : $ctrlCinema->detailRealisateur($id); break;
             case "filmsParGenre" : $ctrlCinema->filmsParGenre($id); break;
             case "listGenres" : $ctrlCinema->listGenres(); break;
             case "detailGenre" : $ctrlCinema->detailGenre($id); break;
             case "listRoles" : $ctrlCinema->listRoles(); break;
             case "detailRole" : $ctrlCinema->detailRole($id); break;
+            case "ajouterGenre" : $ctrlCinema->ajouterGenre(); break;
+            case "ajouterFilm" : $ctrlCinema->ajouterFilm(); break;
         }
     }
     
