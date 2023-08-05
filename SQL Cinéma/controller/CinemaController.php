@@ -7,9 +7,9 @@
     // on crée une classe CinemaController
     class CinemaController {
 
+        // méthode pour afficher la page d'accueil avec les 4 films les plus récents
         public function listTop4() {
             $pdo = Connect::seConnecter();
-
             $requete = $pdo->query("
                             SELECT titre,
                             YEAR(date_sortie) AS annee,
@@ -24,7 +24,6 @@
         }
         // méthode pour afficher la liste des films
         public function listFilms() {
-
             // on se connecte à la base de données
             $pdo = Connect::seConnecter();
             // requête pour récupérer les films
@@ -41,9 +40,8 @@
 
         }
 
-        // méthode pour afficher les détails d'un acteur
+        // méthode pour afficher les détails d'un film
         public function detailFilm($id) {
-
             $pdo = Connect::seConnecter();
             // on prépare la requête
             // Requête pour récuperer infos d'un film
@@ -67,17 +65,19 @@
             $requeteFilm->execute(["id" => $id]);
 
             $requeteCasting = $pdo->prepare("
-                            SELECT r.role_jouer, CONCAT(p.prenom, ' ', p.nom ,' ') AS info_acteur
+                            SELECT r.role_jouer, GROUP_CONCAT(CONCAT(p.prenom, ' ', p.nom)) AS info_acteur
                             FROM film f
                             INNER JOIN jouer j ON j.id_film = f.id_film
                             INNER JOIN role r ON r.id_role = j.id_role
                             INNER JOIN acteur a ON a.id_acteur = j.id_acteur
                             INNER JOIN personne p ON p.id_personne = a.id_personne
-                            WHERE f.id_film= :id;
+                            WHERE f.id_film = :id
+                            GROUP BY r.role_jouer;
             ");
             // on exécute la requête casting en passant l'id en paramètre
             $requeteCasting->execute(["id" => $id]);
 
+            // on prépare la requête qui va nous permettre de récupérer les genres du film
             $requeteGenre = $pdo->prepare("
                             SELECT f.id_film,
                             GROUP_CONCAT(g.libelle SEPARATOR ', ') AS libelle
@@ -94,6 +94,7 @@
 
         }
 
+        // méthode pour afficher la liste des réalisateurs
         public function listActeurs() {
             $pdo = Connect::seConnecter();
             $requeteActeurs = $pdo->query("
@@ -106,6 +107,7 @@
             require "view/acteurs.php";
         }
 
+        // méthode pour afficher les détails d'un acteur
         public function detailActeur($id) {
             $pdo = Connect::seConnecter();
             $requeteActeur = $pdo->prepare("
@@ -126,6 +128,7 @@
             require "view/detailActeur.php";
         }
 
+        // méthode pour afficher la liste des réalisateurs
         public function ajouterGenre() {
             if(isset($_POST["submit"])){
                 $pdo = Connect::seConnecter();
@@ -142,6 +145,7 @@
             require "view/ajoutGenre.php";
         }
 
+        // méthode pour afficher les films par genre
         public function filmsParGenre($id){
             $pdo = Connect::seConnecter();
             $requeteGenre = $pdo->prepare("
@@ -154,7 +158,73 @@
             require "view/filmsParGenre.php";
         }
         
-        
+        // méthode pour afficher la liste des genres
+        public function listGenres() {
+            $pdo = Connect::seConnecter();
+            $requeteGenres = $pdo->query("
+                            SELECT g.id_genre, g.libelle
+                            FROM genre g
+            ");
+            require "view/genres.php";
+        }
+
+        public function detailGenre($id) {
+
+            $pdo = Connect::seConnecter();
+            // on prépare la requête qui va nous permettre de récupérer les infos du genre
+            $requeteGenre = $pdo->prepare("
+                            SELECT g.id_genre, g.libelle
+                            FROM genre g
+                            WHERE g.id_genre = :id;
+            ");
+            $requeteGenre->execute(["id" => $id]);
+            $genre = $requeteGenre->fetch();
+            // on prépare la requête qui va nous permettre de récupérer les films du genre
+            $requeteFilmParGenre = $pdo->prepare("
+                            SELECT f.id_film,
+                            f.titre,
+                            YEAR(date_sortie) AS annee,
+                            CONCAT(FLOOR(duree_minute / 60), 'h', LPAD(MOD(duree_minute, 60), 2, '0')) AS duree,
+                            f.affiche,
+                            f.note
+                            FROM FILM f
+                            INNER JOIN contenir c ON f.id_film = c.id_film
+                            WHERE c.id_genre = :id;
+            ");
+            $requeteFilmParGenre->execute(["id" => $id]);
+
+            require "view/detailGenre.php";
+        }
+
+        // méthode pour afficher la liste des personnages/rôles
+        public function listRoles() {
+            $pdo = Connect::seConnecter();
+            $requeteRoles = $pdo->query("
+                            SELECT r.id_role, r.role_jouer
+                            FROM role r
+            ");
+            require "view/roles.php";
+        }
+
+        public function detailRole($id) {
+            $pdo = Connect::seConnecter();
+            // on prépare la requête qui va nous permettre de récupérer les infos du role
+            $requeteRole = $pdo->prepare("
+                            SELECT CONCAT(p.nom, ' ' , p.prenom) AS acteur, f.titre AS film_joue,
+                            p.id_personne,
+                            r.id_role, r.role_jouer
+                            FROM PERSONNE p
+                            INNER JOIN ACTEUR a ON p.id_personne = a.id_personne
+                            INNER JOIN JOUER j ON a.id_acteur = j.id_acteur
+                            INNER JOIN FILM f ON j.id_film = f.id_film
+                            INNER JOIN ROLE r ON j.id_role = r.id_role
+                            WHERE j.id_role = :id;
+            ");
+            $requeteRole->execute(["id" => $id]);
+            $role = $requeteRole->fetch();
+
+            require "view/detailRole.php";
+        }
         
     }
 

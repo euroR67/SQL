@@ -1,7 +1,7 @@
 <!-- Début d'enregistrement -->
 <?php 
     ob_start();
-    $titre_secondaire = "Liste des acteurs";
+    $titre_secondaire = "Liste des genres";
 ?>
 
 
@@ -10,13 +10,12 @@
     <div class="top4">
         <h2><?= $titre_secondaire ?></h2>
         <div class="film-card">
-            <?php foreach ($requeteActeurs->fetchAll() as $acteur) { ?>
+            <?php foreach ($requeteGenres->fetchAll() as $genre) { ?>
                 <div class="card">
-                    <a href="index.php?action=detailActeur&id=<?= $acteur["id_acteur"] ?>">
-                        <img src="public/img/<?= $acteur["photo"] ?>" alt="">
-                    </a>
                     <div class="titre-date">
-                        <h2><?= $acteur["info_acteur"] ?></h2>
+                        <a href="index.php?action=detailGenre&id=<?= $genre["id_genre"] ?>">
+                            <h2><?= $genre["libelle"] ?></h2>
+                        </a>
                     </div>
                 </div> 
             <?php } ?>
@@ -28,7 +27,7 @@
 
 <?php 
     // on stock le titre de la page dans une variable
-    $titre = "Liste des acteurs";
+    $titre = "Liste des genres";
     // on stock le titre secondaire de la page dans une variable
     // fin d'enregistrement
     // on stock le contenu de la page dans une variable

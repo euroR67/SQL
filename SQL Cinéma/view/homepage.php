@@ -10,7 +10,7 @@
             <p>Découvre les <span>films</span> du moment,<br>
             actualités, présentations,<br>
             & plus encore.</p>
-            <a href="films.php">Découvrir</a>
+            <a href="index.php?action=listFilms">Découvrir</a>
         </div>
 
         <!-- Section des top 4 films -->

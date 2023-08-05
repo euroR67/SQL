@@ -13,8 +13,9 @@
         <div class="info">
             <h2><?= $film["titre"] ?></h2>
             <p>Réalisateur : <?= $film["info_realisateur"] ?></p>
-            <?php foreach ($requeteCasting->fetchAll() as $casting) { ?>
-            <p>Acteur : <?= $casting["info_acteur"] ?> incarne le rôle de <?= $casting["role_jouer"] ?></p> 
+            <p>Acteur : <?php foreach ($requeteCasting->fetchAll() as $casting) { ?>
+                <?= $casting["info_acteur"] ?> incarne le rôle de <?= $casting["role_jouer"] ?>
+            </p> 
             <?php } ?>
             <?php foreach ($requeteGenre->fetchAll() as $genre) { ?>
             <p>Genre : <?= $genre["libelle"] ?></p>

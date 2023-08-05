@@ -38,6 +38,7 @@
                 <li><a href="index.php?action=listFilms">Films</a></li>
                 <li><a href="index.php?action=listRoles">Roles</a></li>
                 <li><a href="index.php?action=listActeurs">Acteurs</a></li>
+                <li><a href="index.php?action=listGenres">Genres</a></li>
                 <li><a href="index.php?action=listRealisateurs">Realisateurs</a></li>
                 <li><a href="index.php?action=ajouter">Ajouter</a></li>
                 <li><a href="index.php?action=ajouterGenre">Ajouter Genre</a></li>
