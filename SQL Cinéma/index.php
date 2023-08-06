@@ -26,8 +26,9 @@
             case "detailGenre" : $ctrlCinema->detailGenre($id); break;
             case "listRoles" : $ctrlCinema->listRoles(); break;
             case "detailRole" : $ctrlCinema->detailRole($id); break;
-            case "ajouterGenre" : $ctrlCinema->ajouterGenre(); break;
+            case "listFilm_ajoutGenre" : $ctrlCinema->listFilm_ajoutGenre(); break;
             case "ajouterFilm" : $ctrlCinema->ajouterFilm(); break;
+            case "ajouterGenre" : $ctrlCinema->ajouterGenre(); break;
         }
     }
     
