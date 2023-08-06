@@ -172,11 +172,30 @@
                 $requeteAjoutGenre->execute([
                     'name' => $_POST['name']
                 ]);
+                foreach($_POST['films'] as $film){
+                    $titre = $film;
+                    $requeteAjoutGenre2 = $pdo->prepare("
+                    INSERT INTO contenir (id_film, id_genre)
+                    SELECT
+                        (SELECT id_film FROM film WHERE titre = :film),
+                        (SELECT id_genre FROM genre WHERE libelle = :genre);
+                    ");
+                $requeteAjoutGenre2->execute(["film" => $film, "genre" => $_POST['name']]);
+                }
                 $newId = $pdo->lastInsertId();
-                header("Location:index.php?action=detailGenre&id=".$newId);
-                die;
+                header("Location:index.php?action=listGenres");
             }
         
+            require "view/ajoutGenre.php";
+        }
+
+        public function listFilm_ajoutGenre() {
+            $pdo = Connect::seConnecter();
+            $requeteFilms = $pdo->prepare("
+                            SELECT titre
+                            FROM film
+            ");
+            $requeteFilms->execute();
             require "view/ajoutGenre.php";
         }
 

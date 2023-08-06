@@ -15,6 +15,17 @@
             </label>
         </p>
         <p>
+            <label>
+                Films de ce genre :
+                <select name="films[]" id="" multiple>
+                    <option value="">None</option>    
+                    <?php foreach($requeteFilms->fetchAll() as $film) { ?>
+                        <option value="<?= $film["titre"] ?>"><?= $film["titre"] ?></option>
+                    <?php } ?>
+                </select>
+            </label>
+        </p>
+        <p>
             <input class="ajouter" type="submit" name="submit" value="Ajouter le genre">
         </p>
     </form>

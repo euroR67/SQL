@@ -41,7 +41,7 @@
                 <li><a href="index.php?action=listGenres">Genres</a></li>
                 <li><a href="index.php?action=listRealisateurs">Realisateurs</a></li>
                 <li><a href="index.php?action=ajouter">Ajouter</a></li>
-                <li><a href="index.php?action=ajouterGenre">Ajouter Genre</a></li>
+                <li><a href="index.php?action=listFilm_ajoutGenre">Ajouter genre</a></li>
                 <li><a href="index.php?action=ajouterFilm">Ajouter Film</a></li>
             </ul>
         </nav>
