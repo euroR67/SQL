@@ -11,7 +11,7 @@
         <p>
             <label>
                 Titre :
-                <input type="text" name="name" required>
+                <input type="text" name="titre" required>
             </label>
         </p>
         <p>
@@ -23,7 +23,7 @@
         <p>
             <label>
                 Durée :
-                <input type="number" name="duration" required>
+                <input type="number" name="duree_minute" required>
             </label>
         </p>
         <p>
@@ -35,20 +35,36 @@
         <p>
             <label>
                 Affiche :
-                <input type="file" name="name" required>
+                <input type="file" name="affiche" required>
             </label>
         </p>
         <p>
             <label>
                 Synopsis :
-                <textarea name="resume" cols="30" rows="10" required></textarea>
+                <textarea name="synopsis" cols="30" rows="10" required></textarea>
             </label>
         </p>
         <p>
             <label>
-                Realisateur :
-                
+                Réalisateur :
+                <select name="realisateur" required>
+                    <?php foreach($requeteListRealisateur->fetchAll() as $realisateur) { ?>
+                        <option value="<?= $realisateur["info_realisateur"] ?>"><?= $realisateur["info_realisateur"] ?></option>
+                    <?php } ?>
+                </select>
             </label>
+        </p>
+        <p>
+            <label>
+                Genre :
+                <select name="genre[]" required multiple>
+                    <?php foreach($requeteListGenre->fetchAll() as $genre) { ?>
+                        <option value="<?= $genre["libelle"] ?>"><?= $genre["libelle"] ?></option>
+                    <?php } ?>
+                </select>
+            </label>
+        </p>
+        
         <p>
             <input class="ajouter" type="submit" name="submit" value="Ajouter le film">
         </p>
