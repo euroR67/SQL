@@ -1,7 +1,7 @@
 <!-- Début d'enregistrement -->
 <?php 
     ob_start();
-    $titre_secondaire = "Formulaire ajout genre";
+    $titre_secondaire = "Ajouter un genre";
 ?>
 
 <main>
@@ -34,7 +34,7 @@
 
 <?php 
     // on stock le titre de la page dans une variable
-    $titre = "Formulaire ajout de genre ";
+    $titre = "Ajouter un genre";
     // on stock le titre secondaire de la page dans une variable
     // fin d'enregistrement
     // on stock le contenu de la page dans une variable

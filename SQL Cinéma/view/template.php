@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link rel="stylesheet" href="public/css/style.css">
-    
     <script src="public/js/script.js"></script>
     <title><?= $titre ?></title>
 </head>
@@ -43,6 +42,7 @@
                 <li><a href="index.php?action=ajouter">Ajouter</a></li>
                 <li><a href="index.php?action=listFilm_ajoutGenre">Ajouter genre</a></li>
                 <li><a href="index.php?action=listRealisateurGenre_ajoutFilm">Ajouter Film</a></li>
+                
             </ul>
         </nav>
         <!-- Fond obscure lorsque le menu burger est ouvert -->

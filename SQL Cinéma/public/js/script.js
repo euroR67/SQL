@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-
   // Permet l'ouverture et fermeture du menu de navigation
   function openNav() {
     // Définition des variables
@@ -25,4 +24,17 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   // Appel de la fonction
   openNav();
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+  function addCasting() {
+    const addCast = document.querySelector(".addBtn");
+    const castDiv = document.querySelector(".cast-div");
+
+    addCast.addEventListener("click", () => {
+      newCast = castDiv.querySelector(".casting").cloneNode(true);
+      castDiv.appendChild(newCast);
+    });
+  }
+  addCasting();
 });

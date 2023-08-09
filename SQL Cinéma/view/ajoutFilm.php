@@ -1,7 +1,7 @@
 <!-- Début d'enregistrement -->
 <?php 
     ob_start();
-    $titre_secondaire = "Formulaire ajout film";
+    $titre_secondaire = "Ajouter un film";
 ?>
 
 <main>
@@ -54,11 +54,34 @@
                 </select>
             </label>
         </p>
+        <div class="cast-div">
+            <button type="button" class="addBtn">Plus de rôle</button>
+            <p class="casting">
+                <label>
+                    Acteurs :
+                    <select name="acteurs[]">
+                        <?php foreach($requeteListActeurs->fetchAll() as $acteur) { ?>
+                            <option value="<?= $acteur["info_acteur"] ?>"><?= $acteur["info_acteur"] ?></option>
+                        <?php } ?>
+                    </select>
+                </label>
+                <label>
+                    Rôles :
+                    <select name="roles[]">
+                        <?php foreach($requeteListRoles->fetchAll() as $role) { ?>
+                            <option value="<?= $role["role_jouer"] ?>"><?= $role["role_jouer"] ?></option>
+                        <?php } ?>
+                    </select>
+                </label>
+            </p>
+        </div>
+        
         <p>
             <label>
                 Genre :
-                <select name="genre[]" required multiple>
-                    <?php foreach($requeteListGenre->fetchAll() as $genre) { ?>
+                <select name="genres[]" required multiple>
+                    <?php foreach($requeteListGenre->fetchAll() as $genre) { 
+                      ?>
                         <option value="<?= $genre["libelle"] ?>"><?= $genre["libelle"] ?></option>
                     <?php } ?>
                 </select>
@@ -74,7 +97,7 @@
 
 <?php 
     // on stock le titre de la page dans une variable
-    $titre = "Formulaire ajout de film ";
+    $titre = "Ajouter un film";
     // on stock le titre secondaire de la page dans une variable
     // fin d'enregistrement
     // on stock le contenu de la page dans une variable

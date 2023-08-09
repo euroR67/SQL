@@ -63,7 +63,7 @@
             ");
             // on exécute la requête film en passant l'id en paramètre
             $requeteFilm->execute(["id" => $id]);
-
+            // requête pour récupérer le casting du film
             $requeteCasting = $pdo->prepare("
                             SELECT r.role_jouer, GROUP_CONCAT(CONCAT(p.prenom, ' ', p.nom)) AS info_acteur
                             FROM film f
@@ -285,9 +285,10 @@
 
         // méthode pour ajouter un film
         public function ajouterFilm() {
-           
+            
             if(isset($_POST["submit"])){
                 $pdo = Connect::seConnecter();
+                // Importer l'image chargée dans le dossier public/img
                 move_uploaded_file($_FILES['affiche']['tmp_name'], 'public/img/'.$_FILES['affiche']['name']);
                 $requeteAjoutFilm = $pdo->prepare("
                             INSERT INTO film(titre, date_sortie, duree_minute, note, affiche, synopsis, id_realisateur)
@@ -306,14 +307,30 @@
                 ]);
                 // on récupère les genres sélectionnés
                 foreach($_POST['genres'] as $genre){
-                    $requeteAjoutFilm3 = $pdo->prepare("
+                    $requeteAjoutContenir = $pdo->prepare("
                     INSERT INTO contenir (id_film, id_genre)
                     SELECT
                         (SELECT id_film FROM film WHERE titre = :titre),
                         (SELECT id_genre FROM genre WHERE libelle = :genre);
                     ");
-                $requeteAjoutFilm3->execute(["titre" => $_POST['titre'], "genre" => $genre]);
+                $requeteAjoutContenir->execute([
+                    "titre" => $_POST['titre'],
+                    "genre" => $genre]);
                 }
+                
+                foreach($_POST['acteurs'] as $index=>$acteur){
+                $requeteAjoutJouer = $pdo->prepare("
+                            INSERT INTO jouer(id_acteur, id_film, id_role)
+                            VALUES ((SELECT a.id_acteur FROM acteur a WHERE id_personne =
+                            (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
+                            (SELECT id_film FROM film WHERE titre = :titre),
+                            (SELECT id_role FROM role WHERE role_jouer = :role))
+                            ");
+                $requeteAjoutJouer->execute([
+                    "acteur" => $acteur,
+                    "titre" => $_POST['titre'], 
+                    "role" => $_POST['roles'][$index]]);
+                        }
                 $newId = $pdo->lastInsertId();
                 header("Location:index.php?action=listFilms");
             }
@@ -322,50 +339,39 @@
         // méthode pour afficher la liste des réalisateurs pour l'ajout de film
         public function listRealisateurGenre_ajoutFilm() {
             $pdo = Connect::seConnecter();
+            // Reqûete pour récupérer les réalisateurs
             $requeteListRealisateur = $pdo->prepare("
                             SELECT CONCAT(p.prenom, ' ', p.nom) AS info_realisateur
                             FROM personne p
                             INNER JOIN realisateur r ON r.id_personne = p.id_personne
             ");
             $requeteListRealisateur->execute();
+
+            // Reqûete pour récupérer les genres
             $requeteListGenre = $pdo->prepare("
                             SELECT libelle
                             FROM genre
             ");
             $requeteListGenre->execute();
+
+            // Reqûete pour récupérer les acteurs
+            $requeteListActeurs = $pdo->prepare("
+                            SELECT CONCAT(p.prenom, ' ', p.nom) AS info_acteur
+                            FROM personne p
+                            INNER JOIN acteur a ON a.id_personne = p.id_personne
+            ");
+            $requeteListActeurs->execute();
+
+            // Reqûete pour récupérer les rôles
+            $requeteListRoles = $pdo->prepare("
+                            SELECT role_jouer
+                            FROM role
+            ");
+            $requeteListRoles->execute();
+        
+            // ajouter les entrées de casting dans la table jouer
+
             require "view/ajoutFilm.php";
         }
-        // // méthode pour afficher la liste des acteurs pour l'ajout de film
-        // public function listActeur_ajoutFilm() {
-        //     $pdo = Connect::seConnecter();
-        //     $requeteActeurs = $pdo->query("
-        //                     SELECT CONCAT(p.prenom, ' ', p.nom ,' ') AS info_acteur,
-        //                     p.photo,
-        //                     a.id_acteur
-        //                     FROM personne p
-        //                     INNER JOIN acteur a ON a.id_personne = p.id_personne
-        //     ");
-        //     require "view/ajoutFilm.php";
-        // }
-        // // méthode pour afficher la liste des rôles pour l'ajout de film
-        // public function listRole_ajoutFilm() {
-        //     $pdo = Connect::seConnecter();
-        //     $requeteRoles = $pdo->query("
-        //                     SELECT r.id_role, r.role_jouer
-        //                     FROM role r
-        //     ");
-        //     require "view/ajoutFilm.php";
-        // }
-        // // méthode pour afficher la liste des genres pour l'ajout de film
-        // public function listGenre_ajoutFilm() {
-        //     $pdo = Connect::seConnecter();
-        //     $requeteGenres = $pdo->query("
-        //                     SELECT g.id_genre, g.libelle
-        //                     FROM genre g
-        //     ");
-        //     require "view/ajoutFilm.php";
-        // }
-        
     }
-
 ?>
