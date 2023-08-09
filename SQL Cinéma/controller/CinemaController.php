@@ -336,6 +336,7 @@
             }
             require "view/ajoutFilm.php";
         }
+
         // méthode pour afficher la liste des réalisateurs pour l'ajout de film
         public function listRealisateurGenre_ajoutFilm() {
             $pdo = Connect::seConnecter();
@@ -372,6 +373,45 @@
             // ajouter les entrées de casting dans la table jouer
 
             require "view/ajoutFilm.php";
+        }
+
+        // méthode pour ajouter un personnage qui est un réalisateur
+        public function ajouterRealisateur() {
+            if(isset($_POST["submit"])){
+                $pdo = Connect::seConnecter();
+                // Importer l'image chargée dans le dossier public/img
+                move_uploaded_file($_FILES['photo']['tmp_name'], 'public/img/'.$_FILES['photo']['name']);
+                $requeteAjoutRealisateur = $pdo->prepare("
+                            INSERT INTO personne(nom, prenom, date_de_naissance, sexe, photo, biographie)
+                            VALUES (:nom, :prenom, :date_de_naissance, :sexe, :photo, :biographie)
+                ");
+                // on exécute la requête en passant les valeurs en paramètre
+                $requeteAjoutRealisateur->execute([
+                    'nom' => $_POST['nom'],
+                    'prenom' => $_POST['prenom'],
+                    'date_de_naissance' => $_POST['date_de_naissance'],
+                    'sexe' => $_POST['sexe'],
+                    'photo' => $_FILES["photo"]["name"],
+                    'biographie' => $_POST['biographie']
+                ]);
+
+                $newPersonId = $pdo->lastInsertId();
+                // on récupère les films sélectionnés
+                
+                $requeteAjoutRealisateur2 = $pdo->prepare("
+                            INSERT INTO realisateur (id_personne)
+                            VALUES (:id_personne)
+                            ");
+                $requeteAjoutRealisateur2->execute([
+                    "id_personne" => $newPersonId
+                ]);
+                
+                $newId = $pdo->lastInsertId();
+                header("Location:index.php?action=listRealisateurs");
+            }
+
+        
+            require "view/ajoutRealisateur.php";
         }
     }
 ?>
