@@ -39,10 +39,10 @@
                 <li><a href="index.php?action=listActeurs">Acteurs</a></li>
                 <li><a href="index.php?action=listGenres">Genres</a></li>
                 <li><a href="index.php?action=listRealisateurs">Realisateurs</a></li>
-                <li><a href="index.php?action=ajouter">Ajouter</a></li>
-                <li><a href="index.php?action=listFilm_ajoutGenre">Ajouter genre</a></li>
+                <li><a href="index.php?action=listFilm_ajoutGenre">Ajouter Genre</a></li>
                 <li><a href="index.php?action=listRealisateurGenre_ajoutFilm">Ajouter Film</a></li>
                 <li><a href="index.php?action=ajouterRealisateur">Ajouter Réalisateur</a></li>
+                <li><a href="index.php?action=listFilmRole_ajoutActeur">Ajouter Acteur</a></li>
             </ul>
         </nav>
         <!-- Fond obscure lorsque le menu burger est ouvert -->

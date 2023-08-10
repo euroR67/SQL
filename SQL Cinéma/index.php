@@ -34,6 +34,9 @@
             case "listRealisateurGenre_ajoutFilm" : $ctrlCinema->listRealisateurGenre_ajoutFilm(); break;
             // appel au fonction pour l'ajout de réalisateur
             case "ajouterRealisateur" : $ctrlCinema->ajouterRealisateur(); break;
+            // appel au fonction pour l'ajout d'acteur
+            case "ajouterActeur" : $ctrlCinema->ajouterActeur(); break;
+            case "listFilmRole_ajoutActeur" : $ctrlCinema->listFilmRole_ajoutActeur(); break;
         }
     }
     

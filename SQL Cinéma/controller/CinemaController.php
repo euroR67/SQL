@@ -318,6 +318,7 @@
                     "genre" => $genre]);
                 }
                 
+                // Insérer les relations dans la table jouer
                 foreach($_POST['acteurs'] as $index=>$acteur){
                 $requeteAjoutJouer = $pdo->prepare("
                             INSERT INTO jouer(id_acteur, id_film, id_role)
@@ -329,8 +330,9 @@
                 $requeteAjoutJouer->execute([
                     "acteur" => $acteur,
                     "titre" => $_POST['titre'], 
-                    "role" => $_POST['roles'][$index]]);
-                        }
+                    "role" => $_POST['roles'][$index]
+                ]);
+                }
                 $newId = $pdo->lastInsertId();
                 header("Location:index.php?action=listFilms");
             }
@@ -412,6 +414,83 @@
 
         
             require "view/ajoutRealisateur.php";
+        }
+
+        public function ajouterActeur() {
+            if(isset($_POST["submit"])){
+                $pdo = Connect::seConnecter();
+                // Importer l'image chargée dans le dossier public/img
+                move_uploaded_file($_FILES['photo']['tmp_name'], 'public/img/'.$_FILES['photo']['name']);
+                // requête pour insérer le personnage dans la table personne
+                $requeteAjoutActeur = $pdo->prepare("
+                            INSERT INTO personne(nom, prenom, date_de_naissance, sexe, photo, biographie)
+                            VALUES (:nom, :prenom, :date_de_naissance, :sexe, :photo, :biographie)
+                ");
+                // on exécute la requête en passant les valeurs en paramètre
+                $requeteAjoutActeur->execute([
+                    'nom' => $_POST['nom'],
+                    'prenom' => $_POST['prenom'],
+                    'date_de_naissance' => $_POST['date_de_naissance'],
+                    'sexe' => $_POST['sexe'],
+                    'photo' => $_FILES["photo"]["name"],
+                    'biographie' => $_POST['biographie']
+                ]);
+
+                // on récupère l'id du personnage inséré
+                $newPersonId = $pdo->lastInsertId();
+                
+                // on insère le personnage dans la table acteur
+                $requeteAjoutActeur2 = $pdo->prepare("
+                            INSERT INTO acteur (id_personne)
+                            VALUES (:id_personne)
+                            ");
+                $requeteAjoutActeur2->execute([
+                    "id_personne" => $newPersonId // on passe l'id du personnage inséré en paramètre
+                ]);
+                
+                // Insérer les relations dans la table jouer
+                foreach($_POST['films'] as $index=>$film){
+                    $acteur = $_POST['prenom'].' '.$_POST['nom'];
+                    $role = $_POST['roles'][$index];
+                    // requête pour insérer les relations dans la table jouer
+                    $requeteAjoutJouer = $pdo->prepare("
+                            INSERT INTO jouer(id_acteur, id_film, id_role)
+                            VALUES ((SELECT a.id_acteur FROM acteur a WHERE id_personne =
+                            (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
+                            (SELECT id_film FROM film WHERE titre = :film),
+                            (SELECT id_role FROM role WHERE role_jouer = :role))
+                            ");
+                    // on exécute la requête en passant les valeurs en paramètre
+                    $requeteAjoutJouer->execute([
+                        "acteur" => $acteur,
+                        "film" => $film, // on passe l'index du film en paramètre
+                        "role" => $role // on passe l'index du rôle en paramètre
+                    ]);
+                }
+                
+                $newId = $pdo->lastInsertId();
+                header("Location:index.php?action=listActeurs");
+            }
+            require "view/ajouterActeur.php";
+        }
+
+        // méthode pour afficher la liste des films et rôles pour l'ajout de l'acteur
+        public function listFilmRole_ajoutActeur(){
+            $pdo = Connect::seConnecter();
+            // Reqûete pour récupérer les films
+            $requeteListFilm = $pdo->prepare("
+                            SELECT titre
+                            FROM film
+            ");
+            $requeteListFilm->execute();
+
+            // Reqûete pour récupérer les rôles
+            $requeteListRoles = $pdo->prepare("
+                            SELECT role_jouer
+                            FROM role
+            ");
+            $requeteListRoles->execute();
+            require "view/ajouterActeur.php";
         }
     }
 ?>
