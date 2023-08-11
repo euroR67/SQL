@@ -60,14 +60,17 @@
                 <label>
                     Acteurs :
                     <select name="acteurs[]">
+                            <option value="none">None</option>
                         <?php foreach($requeteListActeurs->fetchAll() as $acteur) { ?>
                             <option value="<?= $acteur["info_acteur"] ?>"><?= $acteur["info_acteur"] ?></option>
                         <?php } ?>
                     </select>
                 </label>
+                <br>
                 <label>
                     Rôles :
                     <select name="roles[]">
+                        <option value="none">None</option>
                         <?php foreach($requeteListRoles->fetchAll() as $role) { ?>
                             <option value="<?= $role["role_jouer"] ?>"><?= $role["role_jouer"] ?></option>
                         <?php } ?>

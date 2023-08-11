@@ -44,24 +44,29 @@
                 <textarea name="biographie" cols="30" rows="10" required></textarea>
             </label>
         </p>
-        <p class="casting">
-            <label>
-                A jouer dans le film :
-                <select name="films[]" required>  
-                    <?php foreach($requeteListFilm->fetchAll() as $film) { ?>
-                        <option value="<?= $film["titre"] ?>"><?= $film["titre"] ?></option>
-                    <?php } ?>
-                </select>
-            </label>
-            <label>
-                A jouer le rôle de :
-                <select name="roles[]" required>
-                    <?php foreach($requeteListRoles->fetchAll() as $role) { ?>
-                        <option value="<?= $role["role_jouer"] ?>"><?= $role["role_jouer"] ?></option>
-                    <?php } ?>
-                </select>
-            </label>
-        </p>
+        <div class="cast-div">
+            <button type="button" class="addBtn">Plus de casting</button>
+            <p class="casting">
+                <label>
+                    A jouer dans le film :
+                    <select name="films[]">
+                            <option value="none">None</option>  
+                        <?php foreach($requeteListFilm->fetchAll() as $film) { ?>
+                            <option value="<?= $film["titre"] ?>"><?= $film["titre"] ?></option>
+                        <?php } ?>
+                    </select>
+                </label>
+                <label>
+                    A jouer le rôle de :
+                    <select name="roles[]">
+                            <option value="none">None</option>
+                        <?php foreach($requeteListRoles->fetchAll() as $role) { ?>
+                            <option value="<?= $role["role_jouer"] ?>"><?= $role["role_jouer"] ?></option>
+                        <?php } ?>
+                    </select>
+                </label>
+            </p>
+        </div>
         <p>
             <input class="ajouter" type="submit" name="submit" value="Ajouter le acteur">
         </p>

@@ -321,19 +321,23 @@
                 
                 // Insérer les relations dans la table jouer
                 foreach($_POST['acteurs'] as $index=>$acteur){
-                $requeteAjoutJouer = $pdo->prepare("
+                    $role = $_POST['roles'][$index];
+                    // Vérification des valeurs d'acteur et de film avant d'insérer dans la table jouer
+                    if($acteur !== 'none' && $role !== 'none') {
+                        $requeteAjoutJouer = $pdo->prepare("
                             INSERT INTO jouer(id_acteur, id_film, id_role)
                             VALUES ((SELECT a.id_acteur FROM acteur a WHERE id_personne =
                             (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
                             (SELECT id_film FROM film WHERE titre = :titre),
                             (SELECT id_role FROM role WHERE role_jouer = :role))
                             ");
-                $requeteAjoutJouer->execute([
-                    "acteur" => $acteur,
-                    "titre" => $_POST['titre'], 
-                    "role" => $_POST['roles'][$index]
-                ]);
-                }
+                        $requeteAjoutJouer->execute([
+                            "acteur" => $acteur,
+                            "titre" => $_POST['titre'], 
+                            "role" => $role
+                        ]);
+                    }
+                 }
                 $newId = $pdo->lastInsertId();
                 header("Location:index.php?action=listFilms");
             }
@@ -420,6 +424,7 @@
         public function ajouterActeur() {
             if(isset($_POST["submit"])){
                 $pdo = Connect::seConnecter();
+                
                 // Importer l'image chargée dans le dossier public/img
                 move_uploaded_file($_FILES['photo']['tmp_name'], 'public/img/'.$_FILES['photo']['name']);
                 // requête pour insérer le personnage dans la table personne
@@ -454,19 +459,22 @@
                     $acteur = $_POST['prenom'].' '.$_POST['nom'];
                     $role = $_POST['roles'][$index];
                     // requête pour insérer les relations dans la table jouer
-                    $requeteAjoutJouer = $pdo->prepare("
+                    if($film !== 'none' && $role !== 'none') {
+                        $requeteAjoutJouer = $pdo->prepare("
                             INSERT INTO jouer(id_acteur, id_film, id_role)
-                            VALUES ((SELECT a.id_acteur FROM acteur a WHERE id_personne =
-                            (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
+                            SELECT 
+                            (SELECT a.id_acteur FROM acteur a WHERE id_personne =
+                                (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
                             (SELECT id_film FROM film WHERE titre = :film),
-                            (SELECT id_role FROM role WHERE role_jouer = :role))
+                            (SELECT id_role FROM role WHERE role_jouer = :role)
                             ");
-                    // on exécute la requête en passant les valeurs en paramètre
-                    $requeteAjoutJouer->execute([
-                        "acteur" => $acteur,
-                        "film" => $film, // on passe l'index du film en paramètre
-                        "role" => $role // on passe l'index du rôle en paramètre
-                    ]);
+                        // on exécute la requête en passant les valeurs en paramètre
+                        $requeteAjoutJouer->execute([
+                            "acteur" => $acteur,
+                            "film" => $film, // on passe l'index du film en paramètre
+                            "role" => $role // on passe l'index du rôle en paramètre
+                        ]);
+                    }
                 }
                 
                 $newId = $pdo->lastInsertId();
@@ -497,41 +505,48 @@
         public function ajouterRole() {
             if(isset($_POST["submit"])){
                 $pdo = Connect::seConnecter();
-                // on insère le nouveau rôle dans la table role
-                $requeteAjoutRole = $pdo->prepare("
-                            INSERT INTO role(role_jouer)
-                            VALUES (:role_jouer)
-                ");
-                $requeteAjoutRole->execute([
-                    'role_jouer' => $_POST['role_jouer']
-                ]);
-                $newId = $pdo->lastInsertId();
-                
-            }
-
-            foreach($_POST['films'] as $index=>$film){
-                $acteur = $_POST['prenom'].' '.$_POST['nom'];
-                $role = $_POST['roles'][$index];
-                // requête pour insérer les relations dans la table jouer
-                $requeteAjoutJouer = $pdo->prepare("
-                        INSERT INTO jouer(id_acteur, id_film, id_role)
-                        VALUES ((SELECT a.id_acteur FROM acteur a WHERE id_personne =
-                        (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
-                        (SELECT id_film FROM film WHERE titre = :film),
-                        (SELECT id_role FROM role WHERE role_jouer = :role))
+        
+                foreach ($_POST['role_jouer'] as $index => $role_jouer) {
+                    // Insère le nouveau rôle dans la table role
+                    $requeteAjoutRole = $pdo->prepare("
+                        INSERT INTO role(role_jouer)
+                        VALUES (:role_jouer)
+                    ");
+                    $requeteAjoutRole->execute([
+                        'role_jouer' => $role_jouer
+                    ]);
+                    // Récupère le nouvel ID de rôle
+                    $newRoleId = $pdo->lastInsertId();
+                    
+                    $acteur = $_POST['acteurs'][$index];
+                    $film = $_POST['films'][$index];
+                    
+                    // Vérification des valeurs d'acteur et de film
+                    if ($acteur !== 'none' && $film !== 'none') {
+                        // Requête pour insérer la relation dans la table jouer
+                        $requeteAjoutJouer = $pdo->prepare("
+                            INSERT INTO jouer(id_acteur, id_film, id_role)
+                            VALUES ((SELECT a.id_acteur FROM acteur a WHERE id_personne =
+                                    (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
+                                    (SELECT id_film FROM film WHERE titre = :film),
+                                    :id_role)
                         ");
-                // on exécute la requête en passant les valeurs en paramètre
-                $requeteAjoutJouer->execute([
-                    "acteur" => $acteur,
-                    "film" => $film, // on passe l'index du film en paramètre
-                    "role" => $role // on passe l'index du rôle en paramètre
-                ]);
-                $newId = $pdo->lastInsertId();
+                        
+                        // On exécute la requête en passant les valeurs en paramètre
+                        $requeteAjoutJouer->execute([
+                            "acteur" => $acteur,
+                            "film" => $film,
+                            "id_role" => $newRoleId // Utilisation du nouvel ID de rôle
+                        ]);
+                    }
+                }
+                
                 header("Location:index.php?action=listRoles");
             }
         
             require "view/ajoutRole.php";
         }
+        
 
         // méthode pour afficher la liste des acteurs et films pour l'ajout de rôle
         public function listActeurFilm_ajoutRole() {

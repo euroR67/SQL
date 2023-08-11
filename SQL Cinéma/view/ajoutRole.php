@@ -8,18 +8,18 @@
     
     <h1><?= $titre_secondaire ?></h1>
     <form action="index.php?action=ajouterRole" method="post" enctype="multipart/form-data">
-        <p>
-            <label>
-                Rôle :
-                <input type="text" name="role_jouer" required>
-            </label>
-        </p>
         <div class="cast-div">
             <button type="button" class="addBtn">Plus de casting</button>
             <p class="casting">
                 <label>
+                    Rôle :
+                    <input type="text" name="role_jouer[]" required>
+                </label>
+                <br>
+                <label>
                     Dans le film :
-                    <select name="films[]" required>  
+                    <select name="films[]">
+                            <option value="none">None</option>
                         <?php foreach($requeteListFilm->fetchAll() as $film) { ?>
                             <option value="<?= $film["titre"] ?>"><?= $film["titre"] ?></option>
                         <?php } ?>
@@ -28,7 +28,8 @@
                 <br>
                 <label>
                     Par l'acteur :
-                    <select name="acteurs[]" required>
+                    <select name="acteurs[]">
+                            <option value="none">None</option>
                         <?php foreach($requeteListActeurs->fetchAll() as $acteur) { ?>
                             <option value="<?= $acteur["info_acteur"] ?>"><?= $acteur["info_acteur"] ?></option>
                         <?php } ?>
