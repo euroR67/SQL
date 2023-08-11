@@ -506,7 +506,7 @@
                     'role_jouer' => $_POST['role_jouer']
                 ]);
                 $newId = $pdo->lastInsertId();
-                header("Location:index.php?action=listRoles");
+                
             }
 
             foreach($_POST['films'] as $index=>$film){
@@ -526,6 +526,8 @@
                     "film" => $film, // on passe l'index du film en paramètre
                     "role" => $role // on passe l'index du rôle en paramètre
                 ]);
+                $newId = $pdo->lastInsertId();
+                header("Location:index.php?action=listRoles");
             }
         
             require "view/ajoutRole.php";

@@ -19,7 +19,7 @@
             <p class="casting">
                 <label>
                     Dans le film :
-                    <select name="film[]" required>  
+                    <select name="films[]" required>  
                         <?php foreach($requeteListFilm->fetchAll() as $film) { ?>
                             <option value="<?= $film["titre"] ?>"><?= $film["titre"] ?></option>
                         <?php } ?>
@@ -28,7 +28,7 @@
                 <br>
                 <label>
                     Par l'acteur :
-                    <select name="acteur[]" required>
+                    <select name="acteurs[]" required>
                         <?php foreach($requeteListActeurs->fetchAll() as $acteur) { ?>
                             <option value="<?= $acteur["info_acteur"] ?>"><?= $acteur["info_acteur"] ?></option>
                         <?php } ?>
