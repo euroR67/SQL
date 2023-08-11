@@ -241,7 +241,7 @@
                             WHERE j.id_role = :id;
             ");
             $requeteRole->execute(["id" => $id]);
-            $roles = $requeteRole->fetchAll();
+            
             require "view/detailRole.php";
         }
 
