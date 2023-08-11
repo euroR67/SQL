@@ -1,24 +1,25 @@
 <!-- Début d'enregistrement -->
 <?php 
     ob_start();
-    session_start();
-    $titre_secondaire = $role["role_jouer"];
+    
+    $titre_secondaire = $roles[0]["role_jouer"];
 ?>
 
 <main>
 
-    <div class="top4">
-        <h2>Le personnage <?= $titre_secondaire ?> à été incarné par les acteurs suivant :</h2>
-            <?php foreach($requeteRole as $role) { ?>
-                    <p style="color: white"><?= $role["acteur"] ?> dans <?= $role["film_joue"] ?></p>
+        <div class="top4">
+            <h2>Le personnage <?= $titre_secondaire ?> à été incarné par les acteurs suivant :</h2>
+            <?php foreach($roles as $role) { ?>
+                <p style="color: white"><?= $role["acteur"] ?> dans <?= $role["film_joue"] ?></p>
             <?php } ?>
-    </div>
+        </div>
 
 </main>
 
 <?php 
+    
     // on stock le titre de la page dans une variable
-    $titre = "Détail du rôle ".$role["role_jouer"]."";
+    $titre = "Détail du rôle ".$roles[0]["role_jouer"]."";
     // on stock le titre secondaire de la page dans une variable
     // fin d'enregistrement
     // on stock le contenu de la page dans une variable

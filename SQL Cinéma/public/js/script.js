@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
   openNav();
 });
 
+// Ajouter un champ de casting
 document.addEventListener("DOMContentLoaded", function() {
   function addCasting() {
     const addCast = document.querySelector(".addBtn");

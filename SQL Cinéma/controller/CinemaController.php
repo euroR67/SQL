@@ -230,7 +230,9 @@
             $requeteRole = $pdo->prepare("
                             SELECT CONCAT(p.nom, ' ' , p.prenom) AS acteur, f.titre AS film_joue,
                             p.id_personne,
-                            r.id_role, r.role_jouer
+                            a.id_acteur,
+                            r.id_role, r.role_jouer,
+                            f.id_film
                             FROM PERSONNE p
                             INNER JOIN ACTEUR a ON p.id_personne = a.id_personne
                             INNER JOIN JOUER j ON a.id_acteur = j.id_acteur
@@ -239,8 +241,7 @@
                             WHERE j.id_role = :id;
             ");
             $requeteRole->execute(["id" => $id]);
-            $role = $requeteRole->fetch();
-
+            $roles = $requeteRole->fetchAll();
             require "view/detailRole.php";
         }
 
@@ -491,6 +492,63 @@
             ");
             $requeteListRoles->execute();
             require "view/ajouterActeur.php";
+        }
+        // méthode pour ajouter un rôle
+        public function ajouterRole() {
+            if(isset($_POST["submit"])){
+                $pdo = Connect::seConnecter();
+                // on insère le nouveau rôle dans la table role
+                $requeteAjoutRole = $pdo->prepare("
+                            INSERT INTO role(role_jouer)
+                            VALUES (:role_jouer)
+                ");
+                $requeteAjoutRole->execute([
+                    'role_jouer' => $_POST['role_jouer']
+                ]);
+                $newId = $pdo->lastInsertId();
+                header("Location:index.php?action=listRoles");
+            }
+
+            foreach($_POST['films'] as $index=>$film){
+                $acteur = $_POST['prenom'].' '.$_POST['nom'];
+                $role = $_POST['roles'][$index];
+                // requête pour insérer les relations dans la table jouer
+                $requeteAjoutJouer = $pdo->prepare("
+                        INSERT INTO jouer(id_acteur, id_film, id_role)
+                        VALUES ((SELECT a.id_acteur FROM acteur a WHERE id_personne =
+                        (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
+                        (SELECT id_film FROM film WHERE titre = :film),
+                        (SELECT id_role FROM role WHERE role_jouer = :role))
+                        ");
+                // on exécute la requête en passant les valeurs en paramètre
+                $requeteAjoutJouer->execute([
+                    "acteur" => $acteur,
+                    "film" => $film, // on passe l'index du film en paramètre
+                    "role" => $role // on passe l'index du rôle en paramètre
+                ]);
+            }
+        
+            require "view/ajoutRole.php";
+        }
+
+        // méthode pour afficher la liste des acteurs et films pour l'ajout de rôle
+        public function listActeurFilm_ajoutRole() {
+            $pdo = Connect::seConnecter();
+            // Reqûete pour récupérer les acteurs
+            $requeteListActeurs = $pdo->prepare("
+                            SELECT CONCAT(p.prenom, ' ', p.nom) AS info_acteur
+                            FROM personne p
+                            INNER JOIN acteur a ON a.id_personne = p.id_personne
+            ");
+            $requeteListActeurs->execute();
+
+            // Reqûete pour récupérer les films
+            $requeteListFilm = $pdo->prepare("
+                            SELECT titre
+                            FROM film
+            ");
+            $requeteListFilm->execute();
+            require "view/ajoutRole.php";
         }
     }
 ?>
