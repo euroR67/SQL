@@ -1,17 +1,27 @@
 <!-- Début d'enregistrement -->
 <?php 
     ob_start();
+    session_start();
     $titre_secondaire = "Ajouter un genre";
 ?>
 
 <main>
-    
+    <?php
+        // On vérifie si le tableau "errors" est vide ou pas
+        if(isset($_SESSION["errors"]) && !empty($_SESSION["errors"])){?>
+            <!-- on echo  -->
+            <p><?= $_SESSION["errors"][0] ?></p>
+            <!-- On réinitialise le tableau "errors" dans la session -->
+            <?php
+            $_SESSION["errors"]=[];
+        } ?>
+
     <h1><?= $titre_secondaire ?></h1>
     <form action="index.php?action=ajouterGenre" method="post" enctype="multipart/form-data">
         <p>
             <label>
                 Genre :
-                <input type="text" name="name" required>
+                <input type="text" name="libelle" required>
             </label>
         </p>
         <p>
@@ -25,6 +35,7 @@
                 </select>
             </label>
         </p>
+        
         <p>
             <input class="ajouter" type="submit" name="submit" value="Ajouter le genre">
         </p>

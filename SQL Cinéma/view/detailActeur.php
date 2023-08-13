@@ -4,24 +4,27 @@
     session_start();
 ?>
 
-
 <main>
     
     <div class="detail">
-        <?php foreach($requeteActeur->fetchAll() as $acteur) { ?>
+        <?php $acteur = $requeteActeur->fetch() ?>
         <img src="public/img/<?= $acteur["photo"] ?>" alt="">
         <div class="info">
             <h2><?= $acteur["info_acteur"] ?></h2>
             <p>Date de naissance : <?= $acteur["date_de_naissance"] ?></p>
-            <p>Films : <?= $acteur["films_jouer"] ?></p>
+            <p>Films : 
+                <?php foreach($requeteFilmsActeur->fetchAll() AS $film) { ?>
+                    <a class="yellow-link" href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">
+                        <?= $film["titre"] ?>
+                    </a>,
+                <?php } ?>
+            </p>
             <br><p>Biographie :</p><br>
             <p><?= $acteur["biographie"] ?></p>
         </div>
-        <?php } ?>
     </div>
 
 </main>
-
 
 <?php 
     // on stock le titre de la page dans une variable

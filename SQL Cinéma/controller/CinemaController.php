@@ -3,7 +3,6 @@
     namespace Controller;
     // Accéder à la classe Connect située dans le namespace "Model"
     use Model\Connect; 
-
     // on crée une classe CinemaController
     class CinemaController {
 
@@ -53,7 +52,8 @@
                             f.note,
                             f.synopsis,
                             CONCAT(p.nom, ' ', p.prenom, ' ') AS info_realisateur,
-                            r.role_jouer
+                            r.role_jouer,
+                            re.id_realisateur
                             FROM film f
                             INNER JOIN jouer j ON j.id_film = f.id_film
                             INNER JOIN role r ON r.id_role = j.id_role
@@ -65,28 +65,30 @@
             $requeteFilm->execute(["id" => $id]);
             // requête pour récupérer le casting du film
             $requeteCasting = $pdo->prepare("
-                            SELECT r.role_jouer, GROUP_CONCAT(CONCAT(p.prenom, ' ', p.nom)) AS info_acteur
+                            SELECT r.role_jouer,
+                            CONCAT(p.prenom, ' ', p.nom) AS info_acteur,
+                            a.id_acteur,
+                            j.id_role
                             FROM film f
                             INNER JOIN jouer j ON j.id_film = f.id_film
                             INNER JOIN role r ON r.id_role = j.id_role
                             INNER JOIN acteur a ON a.id_acteur = j.id_acteur
                             INNER JOIN personne p ON p.id_personne = a.id_personne
-                            WHERE f.id_film = :id
-                            GROUP BY r.role_jouer;
+                            WHERE f.id_film = :id;
             ");
             // on exécute la requête casting en passant l'id en paramètre
             $requeteCasting->execute(["id" => $id]);
 
             // on prépare la requête qui va nous permettre de récupérer les genres du film
             $requeteGenre = $pdo->prepare("
-                            SELECT f.id_film,
-                            GROUP_CONCAT(g.libelle SEPARATOR ', ') AS libelle
+                            SELECT f.id_film, g.id_genre,
+                            GROUP_CONCAT(g.libelle SEPARATOR ', ') AS genres
                             FROM film f
                             INNER JOIN contenir c ON f.id_film = c.id_film
                             INNER JOIN genre g ON c.id_genre = g.id_genre
-                            WHERE f.id_film= :id;
-                            GROUP BY f.id_film;
-            ");
+                            WHERE f.id_film = :id
+                            GROUP BY g.id_genre
+                        ");
             // on exécute la requête genre en passant l'id en paramètre
             $requeteGenre->execute(["id" => $id]);
 
@@ -116,14 +118,23 @@
                             DATE_FORMAT(p.date_de_naissance, '%d/%m/%Y') AS date_de_naissance,
                             p.biographie,
                             r.id_realisateur,
-                            GROUP_CONCAT(f.titre SEPARATOR ', ') AS films_realiser
+                            GROUP_CONCAT(f.titre) AS films_realiser
                             FROM personne p
                             INNER JOIN realisateur r ON r.id_personne = p.id_personne
                             LEFT JOIN film f ON f.id_realisateur = r.id_realisateur
-                            WHERE r.id_realisateur = :id;
+                            WHERE r.id_realisateur = :id
                             GROUP BY r.id_realisateur
             ");
             $requeteRealisateur->execute(["id" => $id]);
+
+            $requeteFilmsRealisateur = $pdo->prepare("
+                            SELECT f.id_film, f.titre
+                            FROM film f
+                            INNER JOIN realisateur r ON r.id_realisateur = f.id_realisateur
+                            WHERE f.id_realisateur = :id
+            ");
+            $requeteFilmsRealisateur->execute(["id" => $id]);
+
             require "view/detailRealisateur.php";
         }
 
@@ -149,15 +160,25 @@
                             DATE_FORMAT(p.date_de_naissance, '%d/%m/%Y') AS date_de_naissance,
                             p.biographie,
                             a.id_acteur,
-                            GROUP_CONCAT(f.titre SEPARATOR ', ') AS films_jouer
+                            GROUP_CONCAT(f.titre) AS films_jouer
                             FROM personne p
                             INNER JOIN acteur a ON a.id_personne = p.id_personne
                             LEFT JOIN jouer j ON j.id_acteur = a.id_acteur
                             LEFT JOIN film f ON f.id_film = j.id_film
-                            WHERE a.id_acteur = :id;
+                            WHERE a.id_acteur = :id
                             GROUP BY a.id_acteur
             ");
             $requeteActeur->execute(["id" => $id]);
+
+            $requeteFilmsActeur = $pdo->prepare("
+                            SELECT f.id_film, f.titre
+                            FROM film f
+                            INNER JOIN jouer j ON j.id_film = f.id_film
+                            INNER JOIN acteur a ON a.id_acteur = j.id_acteur
+                            WHERE a.id_acteur = :id
+            ");
+            $requeteFilmsActeur->execute(["id" => $id]);
+
             require "view/detailActeur.php";
         }
 
@@ -239,8 +260,14 @@
                             INNER JOIN FILM f ON j.id_film = f.id_film
                             INNER JOIN ROLE r ON j.id_role = r.id_role
                             WHERE j.id_role = :id;
-            ");
-            $requeteRole->execute(["id" => $id]);
+                            ");
+            $requeteRole2 = $pdo->prepare("
+                            SELECT  role.role_jouer
+                            FROM role 
+                            WHERE id_role = :id;
+                            ");
+            $requeteRole->execute(["id" => $id]);             
+            $requeteRole2->execute(["id" => $id]);
             
             require "view/detailRole.php";
         }
@@ -249,38 +276,46 @@
         public function ajouterGenre() {
             if(isset($_POST["submit"])){
                 $pdo = Connect::seConnecter();
-                $requeteAjoutGenre = $pdo->prepare("
+
+                $libelle = filter_input(INPUT_POST,"libelle", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+                if($libelle)  {
+                    $requeteAjoutGenre = $pdo->prepare("
                             INSERT INTO genre(libelle)
-                            VALUES (:name)
-                ");
-                $requeteAjoutGenre->execute([
-                    'name' => $_POST['name']
-                ]);
-                // on récupère les films sélectionnés
-                foreach($_POST['films'] as $film){
-                    $requeteAjoutGenre2 = $pdo->prepare("
-                    INSERT INTO contenir (id_film, id_genre)
-                    SELECT
-                        (SELECT id_film FROM film WHERE titre = :film),
-                        (SELECT id_genre FROM genre WHERE libelle = :genre);
+                            VALUES (:libelle)
                     ");
-                $requeteAjoutGenre2->execute(["film" => $film, "genre" => $_POST['name']]);
+                    $requeteAjoutGenre->execute([
+                        'libelle' => $_POST['libelle']
+                    ]);
+                    // on récupère les films sélectionnés
+                    foreach($_POST['films'] as $film){
+                        $requeteAjoutGenre2 = $pdo->prepare("
+                        INSERT INTO contenir (id_film, id_genre)
+                        SELECT
+                            (SELECT id_film FROM film WHERE titre = :film),
+                            (SELECT id_genre FROM genre WHERE libelle = :genre);
+                        ");
+                    $requeteAjoutGenre2->execute(["film" => $film, "genre" => $_POST['libelle']]);
+                    }
+                    $newId = $pdo->lastInsertId();
+                    header("Location:index.php?action=listGenres");
                 }
-                $newId = $pdo->lastInsertId();
-                header("Location:index.php?action=listGenres");
+                else {
+                    session_start();
+                    $_SESSION["errors"][] = "Le champ du nom du genre ne peut pas être vide.";
+                    header("Location:index.php?action=listFilm_ajoutGenre");
+                }
             }
-        
-            require "view/ajoutGenre.php";
+           
         }
 
         // méthode pour afficher la liste des films pour l'ajout de genre
         public function listFilm_ajoutGenre() {
             $pdo = Connect::seConnecter();
-            $requeteFilms = $pdo->prepare("
+            $requeteFilms = $pdo->query("
                             SELECT titre
                             FROM film
             ");
-            $requeteFilms->execute();
             require "view/ajoutGenre.php";
         }
 
