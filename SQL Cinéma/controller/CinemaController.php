@@ -6,7 +6,7 @@
     // on crée une classe CinemaController
     class CinemaController {
 
-        // méthode pour afficher la page d'accueil avec les 4 films les plus récents
+        // ================= méthode pour afficher la page d'accueil avec les 4 films les plus récents =================
         public function listTop4() {
             $pdo = Connect::seConnecter();
             $requete = $pdo->query("
@@ -21,7 +21,7 @@
                             LIMIT 4");
             require "view/homepage.php";
         }
-        // méthode pour afficher la liste des films
+        // ================= méthode pour afficher la liste des films =================
         public function listFilms() {
             // on se connecte à la base de données
             $pdo = Connect::seConnecter();
@@ -39,7 +39,7 @@
 
         }
 
-        // méthode pour afficher les détails d'un film
+        // ================= méthode pour afficher les détails d'un film =================
         public function detailFilm($id) {
             $pdo = Connect::seConnecter();
             // on prépare la requête
@@ -96,7 +96,7 @@
 
         }
 
-        // méthode pour afficher la liste des réalisateurs
+        // ================= méthode pour afficher la liste des réalisateurs =================
         public function listRealisateurs() {
             $pdo = Connect::seConnecter();
             $requeteRealisateurs = $pdo->query("
@@ -109,7 +109,7 @@
             require "view/realisateurs.php";
         }
 
-        // méthode pour afficher les détails d'un réalisateur
+        // ================= méthode pour afficher les détails d'un réalisateur =================
         public function detailRealisateur($id) {
             $pdo = Connect::seConnecter();
             $requeteRealisateur = $pdo->prepare("
@@ -138,7 +138,7 @@
             require "view/detailRealisateur.php";
         }
 
-        // méthode pour afficher la liste des réalisateurs
+        // ================= méthode pour afficher la liste des réalisateurs =================
         public function listActeurs() {
             $pdo = Connect::seConnecter();
             $requeteActeurs = $pdo->query("
@@ -151,7 +151,7 @@
             require "view/acteurs.php";
         }
 
-        // méthode pour afficher les détails d'un acteur
+        // ================= méthode pour afficher les détails d'un acteur =================
         public function detailActeur($id) {
             $pdo = Connect::seConnecter();
             $requeteActeur = $pdo->prepare("
@@ -182,7 +182,7 @@
             require "view/detailActeur.php";
         }
 
-        // méthode pour afficher les films par genre
+        // ================= méthode pour afficher les films par genre =================
         public function filmsParGenre($id){
             $pdo = Connect::seConnecter();
             $requeteGenre = $pdo->prepare("
@@ -195,7 +195,7 @@
             require "view/filmsParGenre.php";
         }
         
-        // méthode pour afficher la liste des genres
+        // ================= méthode pour afficher la liste des genres =================
         public function listGenres() {
             $pdo = Connect::seConnecter();
             $requeteGenres = $pdo->query("
@@ -205,7 +205,7 @@
             require "view/genres.php";
         }
 
-        // méthode pour afficher les détails d'un genre
+        // ================= méthode pour afficher les détails d'un genre =================
         public function detailGenre($id) {
 
             $pdo = Connect::seConnecter();
@@ -234,7 +234,7 @@
             require "view/detailGenre.php";
         }
 
-        // méthode pour afficher la liste des personnages/rôles
+        // ================= méthode pour afficher la liste des personnages/rôles =================
         public function listRoles() {
             $pdo = Connect::seConnecter();
             $requeteRoles = $pdo->query("
@@ -244,7 +244,7 @@
             require "view/roles.php";
         }
 
-        // méthode pour afficher les détails d'un rôle
+        // ================= méthode pour afficher les détails d'un rôle =================
         public function detailRole($id) {
             $pdo = Connect::seConnecter();
             // on prépare la requête qui va nous permettre de récupérer les infos du role
@@ -272,14 +272,35 @@
             require "view/detailRole.php";
         }
 
-        // méthode pour ajouter un genre
+        // ================= méthode pour ajouter un genre =================
         public function ajouterGenre() {
             if(isset($_POST["submit"])){
                 $pdo = Connect::seConnecter();
 
                 $libelle = filter_input(INPUT_POST,"libelle", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-                if($libelle)  {
+                $TableCheck = false;
+                // Vérifie si le tableau de Films est défini et non vide
+                if(isset($_POST["films"]) && !empty($_POST["films"])) {
+                    // Parcourt chaque élément du tableau Films
+                    foreach ($_POST["films"] as $index=>$film ) {
+                        // Applique le filtre de sanitize sur chaque élément du tableau Films
+                        $film = filter_input(INPUT_POST,"films[$index]", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    }
+                    // Vérifie si un film ou plusieurs films sont selectionner ou aucun film n'est selectionner
+                    foreach ($_POST["films"] as $film) {
+                        // Vérifie si un est film selectionner ou pas
+                        if (empty($film)) {
+                            $TableCheck = false; // si aucun film selectionner = false
+                            break; // interruption de la boucle si toutes les valeurs sont vide
+                        }
+                        // Sinon vérifie si au moin un film a été selectionner
+                        else {
+                            $TableCheck = true; // si un ou plusieurs film selectionner = true
+                        }
+                    }
+                }
+                // Si le champ libelle n'est pas vide et au moin 1 film a été selectionner on insère le genre et le/les films
+                if($libelle && $TableCheck) {
                     $requeteAjoutGenre = $pdo->prepare("
                             INSERT INTO genre(libelle)
                             VALUES (:libelle)
@@ -287,7 +308,7 @@
                     $requeteAjoutGenre->execute([
                         'libelle' => $_POST['libelle']
                     ]);
-                    // on récupère les films sélectionnés
+                    // on récupère les films sélectionnés et insère dans la table contenir
                     foreach($_POST['films'] as $film){
                         $requeteAjoutGenre2 = $pdo->prepare("
                         INSERT INTO contenir (id_film, id_genre)
@@ -295,20 +316,34 @@
                             (SELECT id_film FROM film WHERE titre = :film),
                             (SELECT id_genre FROM genre WHERE libelle = :genre);
                         ");
-                    $requeteAjoutGenre2->execute(["film" => $film, "genre" => $_POST['libelle']]);
+                        $requeteAjoutGenre2->execute([
+                            "film" => $film,
+                            "genre" => $_POST['libelle']
+                        ]);
                     }
-                    $newId = $pdo->lastInsertId();
+                    header("Location:index.php?action=listGenres");
+                } 
+                // Si le champ libelle n'est pas vide et que aucun film n'a été selectionner on insère que le genre dans la table 
+                else if($libelle && !$TableCheck) {
+                    $requeteAjoutGenre = $pdo->prepare("
+                            INSERT INTO genre(libelle)
+                            VALUES (:libelle)
+                    ");
+                    $requeteAjoutGenre->execute([
+                        'libelle' => $_POST['libelle']
+                    ]);
                     header("Location:index.php?action=listGenres");
                 }
+                // Sinon on affiche un message d'erreur
                 else {
                     session_start();
                     $_SESSION["errors"][] = "Le champ du nom du genre ne peut pas être vide.";
                     header("Location:index.php?action=listFilm_ajoutGenre");
+                    exit();
                 }
             }
            
         }
-
         // méthode pour afficher la liste des films pour l'ajout de genre
         public function listFilm_ajoutGenre() {
             $pdo = Connect::seConnecter();
@@ -319,67 +354,118 @@
             require "view/ajoutGenre.php";
         }
 
-        // méthode pour ajouter un film
+        // ================= méthode pour ajouter un film =================
         public function ajouterFilm() {
-            
             if(isset($_POST["submit"])){
                 $pdo = Connect::seConnecter();
-                // Importer l'image chargée dans le dossier public/img
-                move_uploaded_file($_FILES['affiche']['tmp_name'], 'public/img/'.$_FILES['affiche']['name']);
-                $requeteAjoutFilm = $pdo->prepare("
+                
+                $titre = filter_input(INPUT_POST, "titre", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $date_sortie = filter_input(INPUT_POST, "date_sortie", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $duree_minute = filter_input(INPUT_POST, "duree_minute", FILTER_VALIDATE_INT);
+                $note = filter_input(INPUT_POST, "note", FILTER_VALIDATE_INT);
+                $synopsis = filter_input(INPUT_POST, "synopsis", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $realisateur = filter_input(INPUT_POST, "realisateur", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        
+                // Vérification extension et erreurs de l'affiche
+                $tmpName = $_FILES["affiche"]["tmp_name"];
+                $img_name = $_FILES["affiche"]["name"];
+                $size = $_FILES["affiche"]["size"];
+                $error = $_FILES["affiche"]["error"];
+                $type = $_FILES["affiche"]["type"];
+        
+                $tabExtension = explode('.', $img_name); // Sépare le nom du fichier et son extension
+                $extension = strtolower(end($tabExtension)); // Stock l'extension
+        
+                //Tableau des extensions acceptées
+                $extensions = ['jpg', 'png', 'jpeg', 'gif'];
+                // Taille maximale acceptée (en bytes)
+                $maxSize = 400000;
+                // Applique le filtre de sanitize sur chaque élément du tableau genre
+                $TableCheck = false;
+        
+                // Vérifie si le tableau de Genres est défini et non vide
+                if(isset($_POST["genres"]) && !empty($_POST["genres"])) {
+                    // Parcourt chaque élément du tableau Genres
+                    foreach($_POST["genres"] as $index=>$genre) {
+                        // Filtrage avec sanitize sur chaque élément du tableau Genres
+                        $genre = filter_input(INPUT_POST,"genres[$index]", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    }
+        
+                    // Vérifie si un genre ou plusieurs genres sont sélectionnés
+                    if (!empty(array_filter($_POST["genres"]))) {
+                        $TableCheck = true;
+                    }
+                }
+        
+                if (in_array($extension, $extensions) && $size <= $maxSize && $error == 0) {
+                    $uniqueName = uniqid('', true);
+                    $file = $uniqueName . "." . $extension;
+                    move_uploaded_file($tmpName, 'public/img/' . $file);
+        
+                    if ($titre && $date_sortie && $duree_minute && $note && $synopsis && $realisateur && $TableCheck && $file) {
+                        $requeteAjoutFilm = $pdo->prepare("
                             INSERT INTO film(titre, date_sortie, duree_minute, note, affiche, synopsis, id_realisateur)
                             VALUES (:titre, :date_sortie, :duree_minute, :note, :affiche, :synopsis, (SELECT r.id_realisateur FROM realisateur r WHERE id_personne =
                             (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :realisateur)))
-                ");
-                // on exécute la requête en passant les valeurs en paramètre
-                $requeteAjoutFilm->execute([
-                    'titre' => $_POST['titre'],
-                    'date_sortie' => $_POST['date_sortie'],
-                    'duree_minute' => $_POST['duree_minute'],
-                    'note' => $_POST['note'],
-                    'affiche' => $_FILES["affiche"]["name"],
-                    'synopsis' => $_POST['synopsis'],
-                    'realisateur' => $_POST['realisateur']
-                ]);
-                // on récupère les genres sélectionnés
-                foreach($_POST['genres'] as $genre){
-                    $requeteAjoutContenir = $pdo->prepare("
-                    INSERT INTO contenir (id_film, id_genre)
-                    SELECT
-                        (SELECT id_film FROM film WHERE titre = :titre),
-                        (SELECT id_genre FROM genre WHERE libelle = :genre);
-                    ");
-                $requeteAjoutContenir->execute([
-                    "titre" => $_POST['titre'],
-                    "genre" => $genre]);
+                        ");
+                        // on exécute la requête en passant les valeurs en paramètre
+                        $requeteAjoutFilm->execute([
+                            'titre' => $titre,
+                            'date_sortie' => $date_sortie,
+                            'duree_minute' => $duree_minute,
+                            'note' => $note,
+                            'affiche' => "$img_name",
+                            'synopsis' => $synopsis,
+                            'realisateur' => $realisateur
+                        ]);
+                        // on récupère les genres sélectionnés pour insérer dans la table contenir
+                        foreach($_POST['genres'] as $genre){
+                            $requeteAjoutContenir = $pdo->prepare("
+                            INSERT INTO contenir (id_film, id_genre)
+                            SELECT
+                                (SELECT id_film FROM film WHERE titre = :titre),
+                                (SELECT id_genre FROM genre WHERE libelle = :genre);
+                            ");
+                            $requeteAjoutContenir->execute([
+                                "titre" => $titre,
+                                "genre" => $genre
+                            ]);
+                        }
+                        // Insérer les relations dans la table jouer
+                        foreach($_POST['acteurs'] as $index=>$acteur){
+                            $role = $_POST['roles'][$index];
+                            // Vérification des valeurs d'acteur et de film avant d'insérer dans la table jouer
+                            if($acteur !== 'none' && $role !== 'none') {
+                                $requeteAjoutJouer = $pdo->prepare("
+                                    INSERT INTO jouer(id_acteur, id_film, id_role)
+                                    VALUES ((SELECT a.id_acteur FROM acteur a WHERE id_personne =
+                                    (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
+                                    (SELECT id_film FROM film WHERE titre = :titre),
+                                    (SELECT id_role FROM role WHERE role_jouer = :role))
+                                    ");
+                                $requeteAjoutJouer->execute([
+                                    "acteur" => $acteur,
+                                    "titre" => $titre, 
+                                    "role" => $role
+                                ]);
+                                header("Location:index.php?action=listFilms");
+                            }
+                        }
+                    }
+                } else {
+                    session_start();
+                    $_SESSION["errors"][] = "Mauvaise extension ou taille trop volumineuse";
+                    header("Location:index.php?action=listRealisateurGenre_ajoutFilm");
+                    exit();
                 }
                 
-                // Insérer les relations dans la table jouer
-                foreach($_POST['acteurs'] as $index=>$acteur){
-                    $role = $_POST['roles'][$index];
-                    // Vérification des valeurs d'acteur et de film avant d'insérer dans la table jouer
-                    if($acteur !== 'none' && $role !== 'none') {
-                        $requeteAjoutJouer = $pdo->prepare("
-                            INSERT INTO jouer(id_acteur, id_film, id_role)
-                            VALUES ((SELECT a.id_acteur FROM acteur a WHERE id_personne =
-                            (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
-                            (SELECT id_film FROM film WHERE titre = :titre),
-                            (SELECT id_role FROM role WHERE role_jouer = :role))
-                            ");
-                        $requeteAjoutJouer->execute([
-                            "acteur" => $acteur,
-                            "titre" => $_POST['titre'], 
-                            "role" => $role
-                        ]);
-                    }
-                 }
                 $newId = $pdo->lastInsertId();
-                header("Location:index.php?action=listFilms");
             }
             require "view/ajoutFilm.php";
         }
-
-        // méthode pour afficher la liste des réalisateurs pour l'ajout de film
+        
+            
+            // méthode pour afficher la liste des réalisateurs pour l'ajout de film
         public function listRealisateurGenre_ajoutFilm() {
             $pdo = Connect::seConnecter();
             // Reqûete pour récupérer les réalisateurs
