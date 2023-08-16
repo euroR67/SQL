@@ -5,6 +5,10 @@
 ?>
 
 <main>
+
+    <?php if (isset($erreur_message)): ?>
+        <p class="error-message"><?= $erreur_message ?></p>
+    <?php endif; ?>
     
     <h1><?= $titre_secondaire ?></h1>
     <form action="index.php?action=ajouterRealisateur" method="post" enctype="multipart/form-data">

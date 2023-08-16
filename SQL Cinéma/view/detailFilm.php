@@ -7,7 +7,7 @@
 <main>
     <!-- Section des top 4 films -->
     <div class="detail">
-        <?php $film=$requeteFilm->fetch() ?>
+        <?php $film = $requeteFilm->fetch() ?>
         <img src="public/img/<?= $film["affiche"] ?>" alt="">
         <div class="info">
             <h2><?= $film["titre"] ?></h2>
@@ -16,16 +16,21 @@
                     <?= $film["info_realisateur"] ?>
                 </a>
             </p>
-            <p>Casting : <?php foreach ($requeteCasting->fetchAll() as $casting) { ?>
-                <a class="yellow-link" href="index.php?action=detailActeur&id=<?= $casting["id_acteur"] ?>">
-                    <?= $casting["info_acteur"] ?>
-                </a>
-                incarne le rôle de
-                <a class="yellow-link" href="index.php?action=detailRole&id=<?= $casting["id_role"] ?>">
-                    <?= $casting["role_jouer"] ?>
-                </a><br>
-            <?php } ?>
-            </p>
+            
+            <?php if ($requeteCasting->rowCount() > 0): ?>
+                <p>Casting : <?php foreach ($requeteCasting->fetchAll() as $casting) { ?>
+                    <a class="yellow-link" href="index.php?action=detailActeur&id=<?= $casting["id_acteur"] ?>">
+                        <?= $casting["info_acteur"] ?>
+                    </a>
+                    incarne le rôle de
+                    <a class="yellow-link" href="index.php?action=detailRole&id=<?= $casting["id_role"] ?>">
+                        <?= $casting["role_jouer"] ?>
+                    </a><br>
+                <?php } ?>
+                </p>
+            <?php else: ?>
+                <p>Casting : Aucun casting n'a été sélectionné pour ce film.</p>
+            <?php endif; ?>
 
             <p>Genres :
                 <?php foreach ($requeteGenre->fetchAll() as $filmGenres) { ?>
@@ -43,6 +48,7 @@
     </div>
 
 </main>
+
 
 <?php 
     // on stock le titre de la page dans une variable

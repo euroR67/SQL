@@ -7,13 +7,18 @@
 <main>
     
     <h1><?= $titre_secondaire ?></h1>
+
+    <?php if (isset($erreur_message)): ?>
+        <p class="error-message"><?= $erreur_message ?></p>
+    <?php endif; ?>
+
     <form action="index.php?action=ajouterRole" method="post" enctype="multipart/form-data">
         <div class="cast-div">
             <button type="button" class="addBtn">Plus de casting</button>
             <p class="casting">
                 <label>
                     Rôle :
-                    <input type="text" name="role_jouer[]" required>
+                    <input type="text" name="role_jouer[]" >
                 </label>
                 <br>
                 <label>

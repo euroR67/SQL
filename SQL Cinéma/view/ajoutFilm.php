@@ -1,20 +1,14 @@
 <!-- Début d'enregistrement -->
 <?php 
     ob_start();
-    session_start();
     $titre_secondaire = "Ajouter un film";
 ?>
 
 <main>
-   
-    <?php
-        if(isset($_SESSION["errors"]) && !empty($_SESSION["errors"])) { ?>
-            <!-- on echo  -->
-            <p><?= $_SESSION["errors"][0] ?></p>
-            <!-- On réinitialise le tableau "errors" dans la session -->
-            <?php
-        } ?>
     <h1><?= $titre_secondaire ?></h1>
+    <?php if (isset($erreur_message)): ?>
+        <p class="error-message"><?= $erreur_message ?></p>
+    <?php endif; ?>
     <form action="index.php?action=ajouterFilm" method="post" enctype="multipart/form-data">
         <p>
             <label>
@@ -36,8 +30,8 @@
         </p>
         <p>
             <label>
-                Note :
-                <input type="number" name="note" required>
+                Note sur 5:
+                <input type="number" name="note" min="0" max="5" required>
             </label>
         </p>
         <p>
@@ -107,7 +101,6 @@
 </main>
 
 <?php 
-    $_SESSION["errors"]=[];
     // on stock le titre de la page dans une variable
     $titre = "Ajouter un film";
     // on stock le titre secondaire de la page dans une variable
