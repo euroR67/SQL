@@ -279,6 +279,7 @@
 
                 $libelle = filter_input(INPUT_POST,"libelle", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                 $TableCheck = false;
+                
                 // Vérifie si le tableau de Films est défini et non vide
                 if(isset($_POST["films"]) && !empty($_POST["films"])) {
                     // Parcourt chaque élément du tableau Films
@@ -379,7 +380,7 @@
                 //Tableau des extensions acceptées
                 $extensions = ['jpg', 'png', 'jpeg', 'gif'];
                 // Taille maximale acceptée (en bytes)
-                $maxSize = 400000;
+                $maxSize = 40000000;
                 // Applique le filtre de sanitize sur chaque élément du tableau genre
                 $TableCheck = false;
         
@@ -448,15 +449,18 @@
                                     "titre" => $titre, 
                                     "role" => $role
                                 ]);
-                                header("Location:index.php?action=listFilms");
                             }
                         }
+                        header("Location:index.php?action=listFilms");
                     }
                 } else {
-                    session_start();
-                    $_SESSION["errors"][] = "Mauvaise extension ou taille trop volumineuse";
-                    header("Location:index.php?action=listRealisateurGenre_ajoutFilm");
-                    exit();
+                    if (!in_array($extension, $extensions)) {
+                        $erreur_message = "L'extension du fichier n'est pas valide. Les extensions acceptées sont : " . implode(", ", $extensions);
+                    } elseif ($size > $maxSize) {
+                        $erreur_message = "Le fichier est trop volumineux. La taille maximale autorisée est " . ($maxSize / 1000) . " Ko.";
+                    } elseif ($error !== 0) {
+                        $erreur_message = "Une erreur s'est produite lors du téléchargement du fichier.";
+                    }
                 }
                 
                 $newId = $pdo->lastInsertId();
@@ -507,38 +511,73 @@
         public function ajouterRealisateur() {
             if(isset($_POST["submit"])){
                 $pdo = Connect::seConnecter();
-                // Importer l'image chargée dans le dossier public/img
-                move_uploaded_file($_FILES['photo']['tmp_name'], 'public/img/'.$_FILES['photo']['name']);
-                $requeteAjoutRealisateur = $pdo->prepare("
+
+                $nom = filter_input(INPUT_POST, "nom", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $prenom = filter_input(INPUT_POST, "prenom", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $date_de_naissance = filter_input(INPUT_POST, "date_de_naissance", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $sexe = filter_input(INPUT_POST, "sexe", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $biographie = filter_input(INPUT_POST, "biographie", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        
+                // Vérification extension et erreurs de l'affiche
+                $tmpName = $_FILES["photo"]["tmp_name"];
+                $img_name = $_FILES["photo"]["name"];
+                $size = $_FILES["photo"]["size"];
+                $error = $_FILES["photo"]["error"];
+                $type = $_FILES["photo"]["type"];
+        
+                $tabExtension = explode('.', $img_name); // Sépare le nom du fichier et son extension
+                $extension = strtolower(end($tabExtension)); // Stock l'extension
+        
+                //Tableau des extensions acceptées
+                $extensions = ['jpg', 'png', 'jpeg', 'gif'];
+                // Taille maximale acceptée (en bytes)
+                $maxSize = 40000000;
+
+                if (in_array($extension, $extensions) && $size <= $maxSize && $error == 0) {
+                    $uniqueName = uniqid('', true);
+                    $file = $uniqueName . "." . $extension;
+                    // Importer l'image chargée dans le dossier public/img
+                    move_uploaded_file($tmpName, 'public/img/' . $file);
+
+                    if ($nom && $prenom && $date_de_naissance && $sexe && $biographie && $file) {
+                        $requeteAjoutRealisateur = $pdo->prepare("
                             INSERT INTO personne(nom, prenom, date_de_naissance, sexe, photo, biographie)
                             VALUES (:nom, :prenom, :date_de_naissance, :sexe, :photo, :biographie)
-                ");
-                // on exécute la requête en passant les valeurs en paramètre
-                $requeteAjoutRealisateur->execute([
-                    'nom' => $_POST['nom'],
-                    'prenom' => $_POST['prenom'],
-                    'date_de_naissance' => $_POST['date_de_naissance'],
-                    'sexe' => $_POST['sexe'],
-                    'photo' => $_FILES["photo"]["name"],
-                    'biographie' => $_POST['biographie']
-                ]);
+                        ");
+                        // on exécute la requête en passant les valeurs en paramètre
+                        $requeteAjoutRealisateur->execute([
+                            'nom' => $nom,
+                            'prenom' => $prenom,
+                            'date_de_naissance' => $date_de_naissance,
+                            'sexe' => $sexe,
+                            'photo' => "$img_name",
+                            'biographie' => $biographie
+                        ]);
 
-                $newPersonId = $pdo->lastInsertId();
-                // on récupère les films sélectionnés
-                
-                $requeteAjoutRealisateur2 = $pdo->prepare("
-                            INSERT INTO realisateur (id_personne)
-                            VALUES (:id_personne)
-                            ");
-                $requeteAjoutRealisateur2->execute([
-                    "id_personne" => $newPersonId
-                ]);
-                
-                $newId = $pdo->lastInsertId();
-                header("Location:index.php?action=listRealisateurs");
+                        $newPersonId = $pdo->lastInsertId();
+                        // on récupère les films sélectionnés
+                        
+                        $requeteAjoutRealisateur2 = $pdo->prepare("
+                                    INSERT INTO realisateur (id_personne)
+                                    VALUES (:id_personne)
+                                    ");
+                        $requeteAjoutRealisateur2->execute([
+                            "id_personne" => $newPersonId
+                        ]);
+                        
+                        $newId = $pdo->lastInsertId();
+                        header("Location:index.php?action=listRealisateurs");
+                    }
+                } else {
+                    if (!in_array($extension, $extensions)) {
+                        $erreur_message = "L'extension du fichier n'est pas valide. Les extensions acceptées sont : " . implode(", ", $extensions);
+                    } elseif ($size > $maxSize) {
+                        $erreur_message = "Le fichier est trop volumineux. La taille maximale autorisée est " . ($maxSize / 1000) . " Ko.";
+                    } elseif ($error !== 0) {
+                        $erreur_message = "Une erreur s'est produite lors du téléchargement du fichier.";
+                    }
+                }
             }
-
-        
             require "view/ajoutRealisateur.php";
         }
 
@@ -546,63 +585,96 @@
             if(isset($_POST["submit"])){
                 $pdo = Connect::seConnecter();
                 
-                // Importer l'image chargée dans le dossier public/img
-                move_uploaded_file($_FILES['photo']['tmp_name'], 'public/img/'.$_FILES['photo']['name']);
-                // requête pour insérer le personnage dans la table personne
-                $requeteAjoutActeur = $pdo->prepare("
+                $erreur_message = "";
+
+                $nom = filter_input(INPUT_POST, "nom", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $prenom = filter_input(INPUT_POST, "prenom", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $date_de_naissance = filter_input(INPUT_POST, "date_de_naissance", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $sexe = filter_input(INPUT_POST, "sexe", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $biographie = filter_input(INPUT_POST, "biographie", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        
+                // Vérification et traitement de l'image chargée
+                $tmpName = $_FILES['photo']['tmp_name'];
+                $img_name = $_FILES['photo']['name'];
+                $size = $_FILES['photo']['size'];
+                $error = $_FILES['photo']['error'];
+                
+                $extensions = ['jpg', 'png', 'jpeg', 'gif'];
+                $maxSize = 40000000;
+        
+                $tabExtension = explode('.', $img_name);
+                $extension = strtolower(end($tabExtension));
+                
+                if (in_array($extension, $extensions) && $error == 0 && $size <= $maxSize) {
+                    $uniqueName = uniqid('', true);
+                    $file = $uniqueName . "." . $extension;
+                    move_uploaded_file($tmpName, 'public/img/' . $file);
+
+                    if ($nom && $prenom && $date_de_naissance && $sexe && $biographie && $file) {
+                        // Insère le personnage dans la table personne
+                        $requeteAjoutActeur = $pdo->prepare("
                             INSERT INTO personne(nom, prenom, date_de_naissance, sexe, photo, biographie)
                             VALUES (:nom, :prenom, :date_de_naissance, :sexe, :photo, :biographie)
-                ");
-                // on exécute la requête en passant les valeurs en paramètre
-                $requeteAjoutActeur->execute([
-                    'nom' => $_POST['nom'],
-                    'prenom' => $_POST['prenom'],
-                    'date_de_naissance' => $_POST['date_de_naissance'],
-                    'sexe' => $_POST['sexe'],
-                    'photo' => $_FILES["photo"]["name"],
-                    'biographie' => $_POST['biographie']
-                ]);
-
-                // on récupère l'id du personnage inséré
-                $newPersonId = $pdo->lastInsertId();
-                
-                // on insère le personnage dans la table acteur
-                $requeteAjoutActeur2 = $pdo->prepare("
+                        ");
+                        $requeteAjoutActeur->execute([
+                            'nom' => $nom,
+                            'prenom' => $prenom,
+                            'date_de_naissance' => $date_de_naissance,
+                            'sexe' => $sexe,
+                            'photo' => $img_name,
+                            'biographie' => $biographie
+                        ]);
+            
+                        // Récupère l'id du personnage inséré
+                        $newPersonId = $pdo->lastInsertId();
+                        
+                        // Insère le personnage dans la table acteur
+                        $requeteAjoutActeur2 = $pdo->prepare("
                             INSERT INTO acteur (id_personne)
                             VALUES (:id_personne)
-                            ");
-                $requeteAjoutActeur2->execute([
-                    "id_personne" => $newPersonId // on passe l'id du personnage inséré en paramètre
-                ]);
-                
-                // Insérer les relations dans la table jouer
-                foreach($_POST['films'] as $index=>$film){
-                    $acteur = $_POST['prenom'].' '.$_POST['nom'];
-                    $role = $_POST['roles'][$index];
-                    // requête pour insérer les relations dans la table jouer
-                    if($film !== 'none' && $role !== 'none') {
-                        $requeteAjoutJouer = $pdo->prepare("
-                            INSERT INTO jouer(id_acteur, id_film, id_role)
-                            SELECT 
-                            (SELECT a.id_acteur FROM acteur a WHERE id_personne =
-                                (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
-                            (SELECT id_film FROM film WHERE titre = :film),
-                            (SELECT id_role FROM role WHERE role_jouer = :role)
-                            ");
-                        // on exécute la requête en passant les valeurs en paramètre
-                        $requeteAjoutJouer->execute([
-                            "acteur" => $acteur,
-                            "film" => $film, // on passe l'index du film en paramètre
-                            "role" => $role // on passe l'index du rôle en paramètre
+                        ");
+                        $requeteAjoutActeur2->execute([
+                            "id_personne" => $newPersonId
                         ]);
+                        
+                        // Insérer les relations dans la table jouer
+                        foreach($_POST['films'] as $index => $film){
+                            $role = $_POST['roles'][$index];
+                            if($film !== 'none' && $role !== 'none') {
+                                $requeteAjoutJouer = $pdo->prepare("
+                                    INSERT INTO jouer(id_acteur, id_film, id_role)
+                                    VALUES (
+                                        (SELECT a.id_acteur FROM acteur a WHERE id_personne =
+                                            (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
+                                        (SELECT id_film FROM film WHERE titre = :film),
+                                        (SELECT id_role FROM role WHERE role_jouer = :role)
+                                    )
+                                ");
+                                $requeteAjoutJouer->execute([
+                                    "acteur" => $prenom . ' ' . $nom,
+                                    "film" => $film,
+                                    "role" => $role
+                                ]);
+                            }
+                        }
+                    }
+                    
+                    header("Location:index.php?action=listActeurs");
+                } else {
+                    // Gestion des erreurs liées à l'image
+                    if (!in_array($extension, $extensions)) {
+                        $erreur_message = "L'extension du fichier n'est pas valide. Les extensions acceptées sont : " . implode(", ", $extensions);
+                    } elseif ($size > $maxSize) {
+                        $erreur_message = "Le fichier est trop volumineux. La taille maximale autorisée est " . ($maxSize / 1000) . " Ko.";
+                    } elseif ($error !== 0) {
+                        $erreur_message = "Une erreur s'est produite lors du téléchargement du fichier.";
                     }
                 }
-                
-                $newId = $pdo->lastInsertId();
-                header("Location:index.php?action=listActeurs");
             }
             require "view/ajouterActeur.php";
         }
+        
+        
 
         // méthode pour afficher la liste des films et rôles pour l'ajout de l'acteur
         public function listFilmRole_ajoutActeur(){
@@ -622,52 +694,63 @@
             $requeteListRoles->execute();
             require "view/ajouterActeur.php";
         }
+
         // méthode pour ajouter un rôle
         public function ajouterRole() {
             if(isset($_POST["submit"])){
                 $pdo = Connect::seConnecter();
-        
+
+                $erreur_message = "";
+
                 foreach ($_POST['role_jouer'] as $index => $role_jouer) {
-                    // Insère le nouveau rôle dans la table role
-                    $requeteAjoutRole = $pdo->prepare("
+                    // Nettoyage de l'entrée du rôle
+                    $role_jouer = filter_var($role_jouer, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+                    // Si le champ rôle est renseigner on procède a l'ajout du rôle
+                    if($role_jouer) {
+                        // Insère le nouveau rôle dans la table role
+                        $requeteAjoutRole = $pdo->prepare("
                         INSERT INTO role(role_jouer)
                         VALUES (:role_jouer)
-                    ");
-                    $requeteAjoutRole->execute([
-                        'role_jouer' => $role_jouer
-                    ]);
-                    // Récupère le nouvel ID de rôle
-                    $newRoleId = $pdo->lastInsertId();
-                    
-                    $acteur = $_POST['acteurs'][$index];
-                    $film = $_POST['films'][$index];
-                    
-                    // Vérification des valeurs d'acteur et de film
-                    if ($acteur !== 'none' && $film !== 'none') {
-                        // Requête pour insérer la relation dans la table jouer
-                        $requeteAjoutJouer = $pdo->prepare("
-                            INSERT INTO jouer(id_acteur, id_film, id_role)
-                            VALUES ((SELECT a.id_acteur FROM acteur a WHERE id_personne =
-                                    (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
-                                    (SELECT id_film FROM film WHERE titre = :film),
-                                    :id_role)
                         ");
-                        
-                        // On exécute la requête en passant les valeurs en paramètre
-                        $requeteAjoutJouer->execute([
-                            "acteur" => $acteur,
-                            "film" => $film,
-                            "id_role" => $newRoleId // Utilisation du nouvel ID de rôle
+                        $requeteAjoutRole->execute([
+                            'role_jouer' => $role_jouer
                         ]);
+                        // Récupère le nouvel ID de rôle
+                        $newRoleId = $pdo->lastInsertId();
+
+                        // Filtrage et nettoyage des valeurs d'acteur et de film
+                        $acteur = filter_var($_POST['acteurs'][$index], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        $film = filter_var($_POST['films'][$index], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        
+                        // Vérification des valeurs d'acteur et de film
+                        if ($acteur !== 'none' && $film !== 'none') {
+                            // Requête pour insérer la relation dans la table jouer
+                            $requeteAjoutJouer = $pdo->prepare("
+                                INSERT INTO jouer(id_acteur, id_film, id_role)
+                                VALUES ((SELECT a.id_acteur FROM acteur a WHERE id_personne =
+                                        (SELECT p.id_personne FROM personne p WHERE CONCAT(p.prenom,' ', p.nom) = :acteur)),
+                                        (SELECT id_film FROM film WHERE titre = :film),
+                                        :id_role)
+                            ");
+                            
+                            // On exécute la requête en passant les valeurs en paramètre
+                            $requeteAjoutJouer->execute([
+                                "acteur" => $acteur,
+                                "film" => $film,
+                                "id_role" => $newRoleId // Utilisation du nouvel ID de rôle
+                            ]);
+                        }
+                        header("Location:index.php?action=listRoles");
+                    } else {
+                        // Si le champ rôle n'est pas renseigné on renvoi un message d'erreur
+                        $erreur_message = "Veuillez renseigner le nom du rôle";
                     }
                 }
-                
-                header("Location:index.php?action=listRoles");
             }
         
             require "view/ajoutRole.php";
         }
-        
 
         // méthode pour afficher la liste des acteurs et films pour l'ajout de rôle
         public function listActeurFilm_ajoutRole() {
