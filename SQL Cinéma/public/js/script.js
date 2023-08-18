@@ -26,6 +26,26 @@ document.addEventListener("DOMContentLoaded", function() {
   openNav();
 });
 
+// Ouvre un sous-menu du menu principal
+document.addEventListener('DOMContentLoaded', function() {
+  const subButton = document.querySelector('.sub-button');
+  const subMenu = subButton.nextElementSibling;
+  const angleDown = document.querySelector('#angle-down');
+
+  subButton.addEventListener('click', function() {
+      const computedStyle = window.getComputedStyle(subMenu);
+      const currentMaxHeight = computedStyle.getPropertyValue('max-height');
+
+      if (currentMaxHeight === '0px') {
+          subMenu.style.maxHeight = subMenu.scrollHeight + 'px';
+          angleDown.style.transform = 'rotate(180deg)';
+      } else {
+          subMenu.style.maxHeight = '0px';
+          angleDown.style.transform = 'rotate(0deg)';
+      }
+  });
+});
+
 // Ajouter un champ de casting
 document.addEventListener("DOMContentLoaded", function() {
   function addCasting() {

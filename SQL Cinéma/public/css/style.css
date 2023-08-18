@@ -42,6 +42,8 @@ svg {
     width: 40px;
 }
 
+/* =================== FIN HEADER =================== */
+
 /* =================== DEBUT BURGER OPEN =================== */
 
 .logo_burger {
@@ -78,19 +80,8 @@ nav {
 }
 
 .active-nav {
-    position: absolute;
     right: 0;
-    top: 0;
-    background-color: #171d22;
-    width: 75%;
-    height: 100vh;
     opacity: 1;
-    transition: 0.8s;
-}
-
-nav ul {
-    display: flex;
-    flex-direction: column;
 }
 
 nav ul li {
@@ -118,12 +109,53 @@ nav ul li a {
 }
 
 .active-overlay {
-    display: block;
     opacity: 0.80;
     visibility: visible;
   }
 
-/* =================== FIN HEADER & BURGER MENU =================== */
+/* =================== FIN BURGER MENU =================== */
+
+/* =================== Début SOUS MENU AJOUTER =================== */
+
+#angle-down {
+    background-color: #2f373e;
+    height: 32px;
+    width: 32px;
+    margin-right: 10px;
+    transition: all 0.5s ease;
+}
+
+.menu-item {
+    position: relative;
+}
+
+.menu-item .sub-menu {
+    opacity: 1;
+    position: relative;
+    top: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: all 0.5s ease;
+}
+
+.sub-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-left: 10px;
+}
+
+#sub-li {
+    padding: 0;
+}
+
+.sub-menu a{
+    margin-left: 20px;
+}
+
+
+/* =================== FIN SOUS MENU AJOUTER =================== */
 
 /* =================== début HOMEPAGE.PHP ===================== */
 

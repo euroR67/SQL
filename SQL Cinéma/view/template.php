@@ -32,18 +32,25 @@
                 <i class="uil uil-times"></i>
             </div>
             <!-- Liste des liens du menu burger -->
-            <ul>
-                <li><a href="index.php?action=listTop4">Accueil</a></li>
-                <li><a href="index.php?action=listFilms">Films</a></li>
-                <li><a href="index.php?action=listRoles">Roles</a></li>
-                <li><a href="index.php?action=listActeurs">Acteurs</a></li>
-                <li><a href="index.php?action=listGenres">Genres</a></li>
-                <li><a href="index.php?action=listRealisateurs">Realisateurs</a></li>
-                <li><a href="index.php?action=listFilm_ajoutGenre">Ajouter un Genre</a></li>
-                <li><a href="index.php?action=listRealisateurGenre_ajoutFilm">Ajouter un Film</a></li>
-                <li><a href="index.php?action=ajouterRealisateur">Ajouter un Réalisateur</a></li>
-                <li><a href="index.php?action=listFilmRole_ajoutActeur">Ajouter un Acteur</a></li>
-                <li><a href="index.php?action=listActeurFilm_ajoutRole">Ajouter un Rôle</a></li>
+            <ul class="menu">
+                <li class="menu-item"><a href="index.php?action=listTop4">Accueil</a></li>
+                <li class="menu-item" id="sub-li">
+                    <a class="sub-button" href="#">Ajouter
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="angle-down"><path fill="#fff" d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z"></path></svg>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="index.php?action=listFilm_ajoutGenre">Ajout Genre</a></li>
+                        <li><a href="index.php?action=listRealisateurGenre_ajoutFilm">Ajout Film</a></li>
+                        <li><a href="index.php?action=ajouterRealisateur">Ajout Réalisateur</a></li>
+                        <li><a href="index.php?action=listFilmRole_ajoutActeur">Ajout Acteur</a></li>
+                        <li><a href="index.php?action=listActeurFilm_ajoutRole">Ajout Rôle</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item"><a href="index.php?action=listFilms">Films</a></li>
+                <li class="menu-item"><a href="index.php?action=listRoles">Roles</a></li>
+                <li class="menu-item"><a href="index.php?action=listActeurs">Acteurs</a></li>
+                <li class="menu-item"><a href="index.php?action=listGenres">Genres</a></li>
+                <li class="menu-item"><a href="index.php?action=listRealisateurs">Realisateurs</a></li>
             </ul>
         </nav>
         <!-- Fond obscure lorsque le menu burger est ouvert -->
@@ -52,6 +59,7 @@
 
     
     <?= $contenu ?>
+
 
     <footer>
         <div class="logo-footer">
