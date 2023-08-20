@@ -211,12 +211,6 @@ nav ul li a {
     flex-direction: column;
 }
 
-.detail > h2 , .top4 > h2{
-    color: #fff;
-    text-align: center;
-    padding-block: 20px;
-}
-
 .card h2 {
     color: white;
     font-size: 1.25rem;
@@ -237,14 +231,13 @@ nav ul li a {
     color: #e4d804;
 }
 
-.card a {
-    width: 70%;
+.card > a {
+    height: 180px;
 }
 
 .card img {
-    display: block; /* Permettre à l'image de remplir l'espace disponible dans la balise <a> */
-    width: 100%; /* Assurer que l'image ne dépasse pas la largeur de la balise <a> */
-    height: 180px; /* La hauteur s'ajustera automatiquement pour maintenir les proportions */
+    width: 130px; /* Assurer que l'image ne dépasse pas la largeur de la balise <a> */
+    height: 100%; /* La hauteur s'ajustera automatiquement pour maintenir les proportions */
 }
 
 .card .titre-date p {
@@ -284,7 +277,7 @@ nav ul li a {
 
 .detail {
     background: url(../img/fond_formulaire.jpg) center/cover no-repeat;
-    padding: 5px;
+    padding: 15px 5px;
     color: #fff;
 }
 
@@ -318,6 +311,14 @@ nav ul li a {
 
 /* =================== début FILMS.PHP =================== */
 
+.banniere {
+    height: 300px;
+    background-image: linear-gradient(to right, rgba(4, 4, 16, 0.601), rgba(37, 36, 36, 0.266)), url(../img/banniere_films.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 .duree_note div p {
     font-size: 0.80rem;
 }
@@ -331,13 +332,26 @@ nav ul li a {
     width: 100%;
 }
 
+.banniere > h2 {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.85rem;
+}
+
+.banniere {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .plus {
     background-color:#e4d804;
     color: black;
     padding: 3px 8px;
     border-radius: 5px;
     font-size: 0.9rem;
-    width: fit-content!important;
+    width: fit-content;
+    height: fit-content;
 }
 
 /* =================== fin FILMS.PHP =================== */
