@@ -16,26 +16,25 @@
         <!-- Section des top 4 films -->
         <div class="top4">
             <h2>LES FILMS DU MOMENT</h2>
-            <div class="film-card">
-                <?php foreach ($requete->fetchAll() as $film) { ?>
-                
-                <div class="card">
+            <?php foreach ($requete->fetchAll() as $film) { ?>
+            <div class="card-container">
+                <div class="card-top4">
                     <a href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">
                         <img src="public/img/<?= $film["affiche"] ?>" alt="Word War Z">
                     </a>
-                    <div class="titre-date">
+                    <div class="top4-titre-date">
                         <h2><?= $film["titre"] ?></h2>
                         <p><?= $film["annee"] ?></p>
                     </div>
-                    <div class="duree_note">
+                    <div class="top4-duree_note">
                         <p>VOSTFR</p>
                         <div>
-                            <p><i class="uil uil-clock"></i> <?= $film["duree"] ?></p>
-                            <p><i class="uil uil-thumbs-up"></i> <?= $film["note"] ?></p>
+                            <p><i class="uil uil-clock"></i> <?= $film["duree"] ?></p>|
+                            <p><i class="uil uil-thumbs-up"></i> <?= $film["note"] ?>/5</p>
                         </div>
                     </div>
                 </div> 
-                <?php } ?>
+            <?php } ?>
             </div>
         </div>
 

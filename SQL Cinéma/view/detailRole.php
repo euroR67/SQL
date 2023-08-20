@@ -8,7 +8,7 @@
 
 <main>
     <div class="detail">
-        <h2>Le rôle de <span class="yellow-link"><?= $titre_secondaire ?></span> à été incarné par le/les acteurs/actrices suivant :</h2>
+        <h2 class="titre-casting">Le rôle de <span class="yellow-link"><?= $titre_secondaire ?></span> à été incarné par le/les acteurs/actrices suivant :</h2>
         <div class="casting-container">
             <?php if ($roles) { ?>
                 <?php foreach($roles as $role) { ?>

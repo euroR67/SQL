@@ -18,10 +18,11 @@ a {
 /* =================== DEBUT Header =================== */
 
 header {
-    background-color: #22232B;
+    background-color: #171d22;
     padding: 10px;
     display: flex;
     justify-content: space-between;
+    border-bottom: 3px solid #e4d804;
 }
 
 .logo a{
@@ -141,12 +142,23 @@ nav ul li a {
     transition: all 0.5s ease;
 }
 
+.menu i{
+    color: yellow;
+}
+
 .sub-button {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 10px;
     margin-left: 10px;
+}
+
+.sub-button svg {
+    margin-left: auto;
+}
+
+.sub-button i {
+    margin-right: 4px;
 }
 
 #sub-li {
@@ -155,6 +167,18 @@ nav ul li a {
 
 .sub-menu a{
     margin-left: 20px;
+    border-left: 3px solid #e4d804;
+}
+
+.social-network {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 70%;
+    color: white;
+    margin-top: 20px;
+    margin-inline: auto;
+    padding: 10px;
 }
 
 
@@ -209,6 +233,140 @@ nav ul li a {
     padding-bottom: 20px;
     display: flex;
     flex-direction: column;
+}
+
+.top4 > h2 {
+    text-align: center;
+    color: white;
+    margin-block: 20px;
+    font-size: 1.70rem;
+    font-weight: 700;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.card-top4 a img {
+    width: 100%;
+    max-height: 450px;
+}
+
+.card-top4 {
+    width: 90%;
+    margin: auto;
+    background-color: #1d202596;
+    color: #fff;
+    border-bottom: 5px solid #e4d804;
+}
+
+.top4-titre-date , .top4-duree_note {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.top4-duree_note div {
+    display: flex;
+    gap: 10px;
+}
+
+
+.top4-duree_note div i , .top4-titre-date p{
+    color: #e4d804;
+}
+
+.top4-duree_note > p {
+    border: 1px solid #585858;
+    padding: 3px;
+    color: #e4d804;
+}
+
+/* =================== fin HOMEPAGE.PHP =================== */
+
+/* =================== début DETAILFILM.PHP =================== */
+
+.detail {
+    background: url(../img/fond_formulaire.jpg) center/cover no-repeat;
+    padding: 15px 5px;
+    color: #fff;
+}
+
+.detail .info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #343434;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #171d2270;
+}
+
+.detail .info p:last-child {
+    background-color: #242c38;
+    text-align: justify;
+    padding: 25px;
+    border-radius: 10px;
+    margin-top: 0;
+}
+
+.yellow-link {
+    color: #e4d804;
+}
+
+.info i {
+    color: #e4d804;
+}
+
+/* =================== fin DETAILFILM.PHP =================== */
+
+/* =================== début FILMS.PHP =================== */
+
+.banniere {
+    height: 300px;
+    background-image: linear-gradient(to right, rgba(4, 4, 16, 0.601), rgba(37, 36, 36, 0.266)), url(../img/banniere_films.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.banniere > h2 {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.85rem;
+}
+
+.banniere {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.duree_note div p {
+    font-size: 0.80rem;
+}
+
+.duree_note {
+    display: flex;
+    flex-direction: column;
+}
+
+.film-info {
+    width: 100%;
+}
+
+
+.plus {
+    background-color:#e4d804;
+    color: black;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    width: fit-content;
+    height: fit-content;
 }
 
 .card h2 {
@@ -271,90 +429,150 @@ nav ul li a {
     padding-block: 5px;
 }
 
-/* =================== fin HOMEPAGE.PHP =================== */
+/* =================== fin FILMS.PHP =================== */
 
-/* =================== début DETAILFILM.PHP =================== */
+/* =================== début ACTEURS.PHP =================== */
 
-.detail {
-    background: url(../img/fond_formulaire.jpg) center/cover no-repeat;
-    padding: 15px 5px;
-    color: #fff;
-}
-
-.detail .info {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border: 1px solid #343434;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #171d2270;
-}
-
-.detail .info p:last-child {
-    background-color: #242c38;
-    text-align: justify;
-    padding: 25px;
-    border-radius: 10px;
-    margin-top: 0;
-}
-
-.yellow-link {
-    color: #e4d804;
-}
-
-.info i {
-    color: #e4d804;
-}
-
-/* =================== fin DETAILFILM.PHP =================== */
-
-/* =================== début FILMS.PHP =================== */
-
-.banniere {
+.banniere-acteurs {
     height: 300px;
-    background-image: linear-gradient(to right, rgba(4, 4, 16, 0.601), rgba(37, 36, 36, 0.266)), url(../img/banniere_films.jpg);
+    background-image: linear-gradient(to right, rgba(4, 4, 16, 0.601), rgba(37, 36, 36, 0.266)), url(../img/film_production.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-.duree_note div p {
-    font-size: 0.80rem;
-}
-
-.duree_note {
-    display: flex;
-    flex-direction: column;
-}
-
-.film-info {
-    width: 100%;
-}
-
-.banniere > h2 {
+.banniere-acteurs > h2 {
     color: #fff;
     font-weight: 800;
     font-size: 1.85rem;
 }
 
-.banniere {
+.banniere-acteurs {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.plus {
-    background-color:#e4d804;
-    color: black;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    width: fit-content;
-    height: fit-content;
+.personne-container {
+    width: 98%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 card par ligne */
+    gap: 20px;
+    padding-top: 30px;
 }
 
-/* =================== fin FILMS.PHP =================== */
+.personne-card {
+    color: white;
+    background-color: #12151e;
+    border-bottom: 5px solid #9f9503;
+    height: 100%;
+}
+
+.personne-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Ajuste l'image sans déformation */
+}
+
+.nom-personne {
+    padding-block: 10px;
+}
+
+.nom-personne h2 {
+    text-align: center;
+    font-size: 1.20rem;
+}
+/* =================== fin ACTEURS.PHP =================== */
+
+
+/* =================== Début REALISATEURS.PHP =================== */
+
+.banniere-realisateur {
+    height: 300px;
+    background-image: linear-gradient(to right, rgba(4, 4, 16, 0.601), rgba(37, 36, 36, 0.266)), url(../img/film_production.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.banniere-realisateur > h2 {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.85rem;
+}
+
+.banniere-realisateur {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* =================== fin REALISATEURS.PHP =================== */
+
+/* =================== Début ROLES.PHP =================== */
+
+.banniere-casting {
+    height: 300px;
+    background-image:url(../img/casting_banniere.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.banniere-casting > h2 {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.85rem;
+}
+
+.banniere-casting {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* =================== Fin ROLES.PHP =================== */
+
+/* =================== Début GENRES.PHP =================== */
+
+.banniere-genres {
+    height: 300px;
+    background-image: linear-gradient(to right, rgba(4, 4, 16, 0.601), rgba(37, 36, 36, 0.266)), url(../img/banner_genres.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.banniere-genres > h2 {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.85rem;
+}
+
+.banniere-genres {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.genre-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 card par ligne */
+    gap: 10px;
+}
+
+.genre-card {
+    background-color: #12151e;
+    border: 1px solid #e4d804;
+    width: 100%;
+    text-align: center;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    padding-block: 5px;
+    margin: auto;
+}
+
+/* =================== Fin GENRES.PHP =================== */
 
 /* =================== début DETAILROLE.PHP =================== */
 
@@ -366,6 +584,11 @@ nav ul li a {
     padding: 10px;
     border-radius: 10px;
     background-color: #171d2270;
+    margin-top: 20px;
+}
+
+.titre-casting {
+    text-align: center;
 }
 
 .casts {
@@ -382,6 +605,7 @@ nav ul li a {
 footer {
     background-image: url(../img/fond_footer.jpg);
     padding: 20px;
+    border-top: 3px solid #e4d804;
 }
 
 .contact div, .contact p {

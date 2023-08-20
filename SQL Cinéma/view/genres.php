@@ -6,18 +6,17 @@
 
 
 <main>
-    <!-- Section des top 4 films -->
-    <div class="top4">
+    <div class="banniere-genres">
         <h2><?= $titre_secondaire ?></h2>
-        <div class="film-card">
+    </div>
+    <div class="detail">
+        <div class="genre-container">
             <?php foreach ($requeteGenres->fetchAll() as $genre) { ?>
-                <div class="card">
-                    <div class="titre-date">
-                        <a href="index.php?action=detailGenre&id=<?= $genre["id_genre"] ?>">
-                            <h2><?= $genre["libelle"] ?></h2>
-                        </a>
-                    </div>
-                </div> 
+                <div class="genre-card">
+                    <a href="index.php?action=detailGenre&id=<?= $genre["id_genre"] ?>">
+                        <h2><?= $genre["libelle"] ?></h2>
+                    </a>
+                </div>
             <?php } ?>
         </div>
     </div>

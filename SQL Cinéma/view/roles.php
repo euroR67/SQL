@@ -6,9 +6,8 @@
 
 
 <main>
-    <!-- Section des top 4 films -->
-    <div class="top4">
-        <h2><?= $titre_secondaire ?></h2>
+    <div class="banniere-casting"></div>
+    <div class="detail">
         <div class="film-card">
             <?php foreach ($requeteRoles->fetchAll() as $role) { ?>
                 <div class="card">

@@ -7,15 +7,17 @@
 
 <main>
     <!-- Section des top 4 films -->
-    <div class="top4">
+    <div class="banniere-realisateur">
         <h2><?= $titre_secondaire ?></h2>
-        <div class="film-card">
+    </div>
+    <div class="top4">
+        <div class="personne-container">
             <?php foreach ($requeteRealisateurs->fetchAll() as $realisateur) { ?>
-                <div class="card">
+                <div class="personne-card">
                     <a href="index.php?action=detailRealisateur&id=<?= $realisateur["id_realisateur"] ?>">
                         <img src="public/img/<?= $realisateur["photo"] ?>" alt="">
                     </a>
-                    <div class="titre-date">
+                    <div class="nom-personne">
                         <h2><?= $realisateur["info_realisateur"] ?></h2>
                     </div>
                 </div> 
