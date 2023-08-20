@@ -9,18 +9,21 @@
     
     <div class="detail">
         <?php $realisateur = $requeteRealisateur->fetch() ?>
-        <img src="public/img/<?= $realisateur["photo"] ?>" alt="">
         <div class="info">
+            <img src="public/img/<?= $realisateur["photo"] ?>" alt="">
             <h2><?= $realisateur["info_realisateur"] ?></h2>
-            <p>Date de naissance : <?= $realisateur["date_de_naissance"] ?></p>
-            <p>Films réalisés: 
+            <p>Date de naissance : <i class="uil uil-calendar-alt"></i> <?= $realisateur["date_de_naissance"] ?></p>
+            <p>Films réalisés:</p>
+            <ul>
                 <?php foreach($requeteFilmsRealisateur->fetchAll() as $film) { ?>
-                    <a class="yellow-link" href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">
-                        <?= $film["titre"] ?>
-                    </a>,
+                    <li>
+                        <a class="yellow-link" href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">
+                            <?= $film["titre"] ?>
+                        </a>
+                    </li>
                 <?php } ?>
-            </p>
-            <br><p>Biographie :</p><br>
+            </ul>
+            <br><p>Biographie :</p>
             <p><?= $realisateur["biographie"] ?></p>
         </div>
     </div>

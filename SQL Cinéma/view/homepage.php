@@ -30,8 +30,8 @@
                     <div class="duree_note">
                         <p>VOSTFR</p>
                         <div>
-                            <p><?= $film["duree"] ?></p>
-                            <p><?= $film["note"] ?></p>
+                            <p><i class="uil uil-clock"></i> <?= $film["duree"] ?></p>
+                            <p><i class="uil uil-thumbs-up"></i> <?= $film["note"] ?></p>
                         </div>
                     </div>
                 </div> 

@@ -7,23 +7,25 @@
 ?>
 
 <main>
-    <div class="top4">
-        <h2>Le rôle de <?= $titre_secondaire ?> à été incarné par les acteurs suivant :</h2>
-        <?php if ($roles) { ?>
-            <?php foreach($roles as $role) { ?>
-                <p style="color: white">
-                    <a class="yellow-link" href="index.php?action=detailActeur&id=<?= $role["id_acteur"] ?>">
-                        <?= $role["acteur"] ?>
-                    </a>
-                    dans 
-                    <a class="yellow-link" href="index.php?action=detailFilm&id=<?= $role["id_film"] ?>">
-                        <?= $role["film_joue"] ?>
-                    </a>
-                </p>
+    <div class="detail">
+        <h2>Le rôle de <span class="yellow-link"><?= $titre_secondaire ?></span> à été incarné par le/les acteurs/actrices suivant :</h2>
+        <div class="casting-container">
+            <?php if ($roles) { ?>
+                <?php foreach($roles as $role) { ?>
+                    <p class="casts" style="color: white">
+                        <a class="yellow-link" href="index.php?action=detailActeur&id=<?= $role["id_acteur"] ?>">
+                            <?= $role["acteur"] ?>
+                        </a>
+                        dans 
+                        <a class="yellow-link" href="index.php?action=detailFilm&id=<?= $role["id_film"] ?>">
+                            <?= $role["film_joue"] ?>
+                        </a>
+                    </p>
+                <?php } ?>
+            <?php } else { ?>
+                <p style="color: white">Aucun acteur n'a encore incarné le rôle <?= $titre_secondaire ?></p>
             <?php } ?>
-        <?php } else { ?>
-            <p style="color: white">Aucun acteur n'a encore incarné le rôle <?= $titre_secondaire ?></p>
-        <?php } ?>
+        </div>
     </div>
 </main>
 

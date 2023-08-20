@@ -47,7 +47,7 @@
                     </ul>
                 </li>
                 <li class="menu-item"><a href="index.php?action=listFilms">Films</a></li>
-                <li class="menu-item"><a href="index.php?action=listRoles">Roles</a></li>
+                <li class="menu-item"><a href="index.php?action=listRoles">Rôles</a></li>
                 <li class="menu-item"><a href="index.php?action=listActeurs">Acteurs</a></li>
                 <li class="menu-item"><a href="index.php?action=listGenres">Genres</a></li>
                 <li class="menu-item"><a href="index.php?action=listRealisateurs">Realisateurs</a></li>

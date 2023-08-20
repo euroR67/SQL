@@ -6,25 +6,39 @@ document.addEventListener("DOMContentLoaded", function() {
     const close = document.querySelector(".uil-times");
     const nav = document.querySelector("nav");
     const overlay = document.querySelector(".overlay");
+    const body = document.body; // Sélectionnez le corps
+
+    // Fonction pour désactiver/réactiver le défilement
+    function toggleScroll() {
+      if (body.style.overflow === "hidden") {
+        body.style.overflow = ""; // Réactiver le défilement
+      } else {
+        body.style.overflow = "hidden"; // Désactiver le défilement
+      }
+    }
+
     // Ouverture du menu de navigation en cliquant sur le menu
     open.addEventListener("click", () => {
       nav.classList.add("active-nav");
       overlay.classList.add("active-overlay");
+      toggleScroll(); // Désactiver le défilement
     });
-    // Fermeture du menu de navigation en cliquant sur l'overlay
-    overlay.addEventListener("click", () => {
+
+    // Fermeture du menu de navigation en cliquant sur l'overlay ou la croix
+    function closeNav() {
       nav.classList.remove("active-nav");
       overlay.classList.remove("active-overlay");
-    });
-    // Fermeture du menu de navigation en cliquant sur la croix
-    close.addEventListener("click", () => {
-      nav.classList.remove("active-nav");
-      overlay.classList.remove("active-overlay");
-    });
+      toggleScroll(); // Réactiver le défilement
+    }
+
+    overlay.addEventListener("click", closeNav);
+    close.addEventListener("click", closeNav);
   }
+
   // Appel de la fonction
   openNav();
 });
+
 
 // Ouvre un sous-menu du menu principal
 document.addEventListener('DOMContentLoaded', function() {

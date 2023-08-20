@@ -11,6 +11,10 @@
     text-decoration: none;
 }
 
+a {
+    color: #fff;
+}
+
 /* =================== DEBUT Header =================== */
 
 header {
@@ -207,7 +211,7 @@ nav ul li a {
     flex-direction: column;
 }
 
-.top4 > h2 {
+.detail > h2 , .top4 > h2{
     color: #fff;
     text-align: center;
     padding-block: 20px;
@@ -215,18 +219,32 @@ nav ul li a {
 
 .card h2 {
     color: white;
+    font-size: 1.25rem;
 }
 
 .card {
-    width: 80%;
+    display: flex;
+    width: 95%;
     margin-inline: auto;
-    background-color: #22232B;
+    background-color: #22232b89;
     margin-bottom: 20px;
+    border: 1px solid #e4d90457;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.card i {
+    color: #e4d804;
+}
+
+.card a {
+    width: 70%;
 }
 
 .card img {
-    width: 100%;
-    height: 400px;
+    display: block; /* Permettre à l'image de remplir l'espace disponible dans la balise <a> */
+    width: 100%; /* Assurer que l'image ne dépasse pas la largeur de la balise <a> */
+    height: 180px; /* La hauteur s'ajustera automatiquement pour maintenir les proportions */
 }
 
 .card .titre-date p {
@@ -240,11 +258,14 @@ nav ul li a {
     padding-inline: 10px;
 }
 
-.card .duree_note {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.card .film-info .duree_note {
     padding-inline: 10px;
+}
+
+.custom-class {
+    border: 1px solid rgba(128, 128, 128, 0.503);
+    margin: 2px;
+    padding-inline: 4px;
 }
 
 .duree_note > p {
@@ -253,9 +274,6 @@ nav ul li a {
 }
 
 .card .duree_note div {
-    display: flex;
-    align-items: center;
-    gap: 10px;
     color: white;
     padding-block: 5px;
 }
@@ -266,20 +284,84 @@ nav ul li a {
 
 .detail {
     background: url(../img/fond_formulaire.jpg) center/cover no-repeat;
-    padding: 20px;
+    padding: 5px;
     color: #fff;
 }
 
-.detail img {
-    width: 100%;
-    height: auto;
+.detail .info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #343434;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #171d2270;
+}
+
+.detail .info p:last-child {
+    background-color: #242c38;
+    text-align: justify;
+    padding: 25px;
+    border-radius: 10px;
+    margin-top: 0;
 }
 
 .yellow-link {
     color: #e4d804;
 }
 
+.info i {
+    color: #e4d804;
+}
+
 /* =================== fin DETAILFILM.PHP =================== */
+
+/* =================== début FILMS.PHP =================== */
+
+.duree_note div p {
+    font-size: 0.80rem;
+}
+
+.duree_note {
+    display: flex;
+    flex-direction: column;
+}
+
+.film-info {
+    width: 100%;
+}
+
+.plus {
+    background-color:#e4d804;
+    color: black;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    width: fit-content!important;
+}
+
+/* =================== fin FILMS.PHP =================== */
+
+/* =================== début DETAILROLE.PHP =================== */
+
+.casting-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #343434;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #171d2270;
+}
+
+.casts {
+    border: 1px solid #34343462;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* =================== fin DETADETAILROLE.PHP =================== */
+
 
 /* =================== DEBUT FOOTER =================== */
 
