@@ -1,7 +1,5 @@
 <?php 
-
     ob_start();
-    session_start();
 ?>
     <main>
         <!-- Section de présentation -->

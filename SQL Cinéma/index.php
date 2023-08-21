@@ -6,7 +6,7 @@
         // on inclue la classe correspondante au paramètre passé
         include $class_name . '.php';
     });
-
+    session_start();
     // on stock cinemaController dans une variable
     $ctrlCinema = new CinemaController();
     $id = (isset($_GET["id"])) ? $_GET["id"] : null;

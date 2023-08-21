@@ -86,14 +86,11 @@
                             f.note,
                             f.synopsis,
                             CONCAT(p.nom, ' ', p.prenom, ' ') AS info_realisateur,
-                            r.role_jouer,
                             re.id_realisateur
                             FROM film f
-                            INNER JOIN jouer j ON j.id_film = f.id_film
-                            INNER JOIN role r ON r.id_role = j.id_role
                             INNER JOIN realisateur re ON re.id_realisateur = f.id_realisateur
                             INNER JOIN personne p ON p.id_personne = re.id_personne
-                            WHERE f.id_film = :id;
+                            WHERE f.id_film = :id
             ");
             // on exécute la requête film en passant l'id en paramètre
             $requeteFilm->execute(["id" => $id]);
@@ -371,10 +368,8 @@
                 }
                 // Sinon on affiche un message d'erreur
                 else {
-                    session_start();
                     $_SESSION["errors"][] = "Le champ du nom du genre ne peut pas être vide.";
-                    header("Location:index.php?action=listFilm_ajoutGenre");
-                    exit();
+                    header("Location:index.php?action=listFilm_ajoutGenre");;die;
                 }
             }
            
@@ -414,7 +409,7 @@
                 //Tableau des extensions acceptées
                 $extensions = ['jpg', 'png', 'jpeg', 'gif'];
                 // Taille maximale acceptée (en bytes)
-                $maxSize = 40000000;
+                $maxSize = 5000000;
                 // Applique le filtre de sanitize sur chaque élément du tableau genre
                 $TableCheck = false;
         
@@ -489,14 +484,17 @@
                     }
                 } else {
                     if (!in_array($extension, $extensions)) {
-                        $erreur_message = "L'extension du fichier n'est pas valide. Les extensions acceptées sont : " . implode(", ", $extensions);
+                        $_SESSION["errors"][] = "L'extension du fichier n'est pas valide. Les extensions acceptées sont : " . implode(", ", $extensions);
+                        header("Location:index.php?action=listRealisateurGenre_ajoutFilm");die;
                     } elseif ($size > $maxSize) {
-                        $erreur_message = "Le fichier est trop volumineux. La taille maximale autorisée est " . ($maxSize / 1000) . " Ko.";
+                        $_SESSION["errors"][] = "Le fichier est trop volumineux. La taille maximale autorisée est " . ($maxSize / 1000) . " Ko.";
+                        header("Location:index.php?action=listRealisateurGenre_ajoutFilm");die;
                     } elseif ($error !== 0) {
-                        $erreur_message = "Une erreur s'est produite lors du téléchargement du fichier.";
+                        $_SESSION["errors"][] = "Une erreur s'est produite lors du téléchargement du fichier.";
+                        header("Location:index.php?action=listRealisateurGenre_ajoutFilm");die;
                     }
                 }
-                
+
                 $newId = $pdo->lastInsertId();
             }
             require "view/ajoutFilm.php";
@@ -778,7 +776,8 @@
                         header("Location:index.php?action=listRoles");
                     } else {
                         // Si le champ rôle n'est pas renseigné on renvoi un message d'erreur
-                        $erreur_message = "Veuillez renseigner le nom du rôle";
+                        $_SESSION["errors"][] = "Veuillez renseigner le nom du rôle";
+                        header("Location:index.php?action=listActeurFilm_ajoutRole");;die;
                     }
                 }
             }

@@ -20,13 +20,15 @@
             
             <?php if ($requeteCasting->rowCount() > 0): ?>
                 <p>Casting :<br> <?php foreach ($requeteCasting->fetchAll() as $casting) { ?>
-                    <a class="yellow-link" href="index.php?action=detailActeur&id=<?= $casting["id_acteur"] ?>">
-                        <?= $casting["info_acteur"] ?>
-                    </a>
-                    incarne
-                    <a class="yellow-link" href="index.php?action=detailRole&id=<?= $casting["id_role"] ?>">
-                        <?= $casting["role_jouer"] ?>
-                    </a><br>
+                    <?php if ($casting["info_acteur"] && $casting["role_jouer"]) : ?>
+                        <a class="yellow-link" href="index.php?action=detailActeur&id=<?= $casting["id_acteur"] ?>">
+                            <?= $casting["info_acteur"] ?>
+                        </a>
+                        incarne
+                        <a class="yellow-link" href="index.php?action=detailRole&id=<?= $casting["id_role"] ?>">
+                            <?= $casting["role_jouer"] ?>
+                        </a><br>
+                    <?php endif; ?>
                 <?php } ?>
                 </p>
             <?php else: ?>

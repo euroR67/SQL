@@ -7,10 +7,15 @@
 <main>
     
     <h1><?= $titre_secondaire ?></h1>
-
-    <?php if (isset($erreur_message)): ?>
-        <p class="error-message"><?= $erreur_message ?></p>
-    <?php endif; ?>
+    <?php 
+    // On vérifie si le tableau "errors" est vide ou pas
+        if(isset($_SESSION["errors"]) && !empty($_SESSION["errors"])){?>
+            <!-- on echo  -->
+            <p><?= $_SESSION["errors"][0] ?></p>
+            <!-- On réinitialise le tableau "errors" dans la session -->
+            <?php
+            $_SESSION["errors"]=[];
+        } ?>
 
     <form action="index.php?action=ajouterRole" method="post" enctype="multipart/form-data">
         <div class="cast-div">

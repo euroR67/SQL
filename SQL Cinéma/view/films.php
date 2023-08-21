@@ -1,7 +1,6 @@
 <!-- Début d'enregistrement -->
 <?php 
     ob_start();
-    session_start();
     $titre_secondaire = "Liste des films";
 ?>
 
@@ -41,19 +40,25 @@
                             <p>De <a class="yellow-link" href="index.php?action=detailRealisateur&id=<?=$film["id_realisateur"]?>"><?= $film["info_realisateur"] ?></a></p>
                             <p>Avec
                                 <?php
-                                $acteursArray = explode(',', $film["acteurs_ids"]);
-                                $acteurNomPrenomArray = explode(',', $film["acteurs"]); // Convertir la chaîne en un tableau de noms/prénoms d'acteurs
+                                $acteursArray = !empty($film["acteurs_ids"]) ? explode(',', $film["acteurs_ids"]) : [];
+                                $acteurNomPrenomArray = !empty($film["acteurs"]) ? explode(',', $film["acteurs"]) : []; // Convertir la chaîne en un tableau de noms/prénoms d'acteurs
                                 
-                                foreach ($acteursArray as $key => $acteurId) {
-                                    $acteurNomPrenom = $acteurNomPrenomArray[$key]; // Récupérer le nom/prénom de l'acteur correspondant
-                                    
-                                    echo '<a class="yellow-link" href="index.php?action=detailActeur&id=' . $acteurId . '">' . $acteurNomPrenom . '</a>';
-                                    
-                                    if ($key < count($acteursArray) - 1) {
-                                        echo ', '; // Ajouter une virgule sauf pour le dernier acteur
+                                if (!empty($acteursArray)) {
+                                    foreach ($acteursArray as $key => $acteurId) {
+                                        $acteurNomPrenom = $acteurNomPrenomArray[$key]; // Récupérer le nom/prénom de l'acteur correspondant
+                                        
+                                        echo '<a class="yellow-link" href="index.php?action=detailActeur&id=' . $acteurId . '">' . $acteurNomPrenom . '</a>';
+                                        
+                                        if ($key < count($acteursArray) - 1) {
+                                            echo ', '; // Ajouter une virgule sauf pour le dernier acteur
+                                        }
                                     }
-                                }?>
+                                } else {
+                                    echo 'Aucun acteur n\'est défini pour ce film.';
+                                }
+                                ?>
                             </p>
+
                         </div>
                         <a class="plus" href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">VOIR PLUS</a>
                     </div>

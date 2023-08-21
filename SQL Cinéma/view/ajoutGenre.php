@@ -1,13 +1,12 @@
 <!-- Début d'enregistrement -->
 <?php 
     ob_start();
-    session_start();
     $titre_secondaire = "Ajouter un genre";
 ?>
 
 <main>
-    <?php
-        // On vérifie si le tableau "errors" est vide ou pas
+    <?php 
+    // On vérifie si le tableau "errors" est vide ou pas
         if(isset($_SESSION["errors"]) && !empty($_SESSION["errors"])){?>
             <!-- on echo  -->
             <p><?= $_SESSION["errors"][0] ?></p>
@@ -21,7 +20,7 @@
         <p>
             <label>
                 Genre :
-                <input type="text" name="libelle" required>
+                <input type="text" name="libelle" >
             </label>
         </p>
         <p>
