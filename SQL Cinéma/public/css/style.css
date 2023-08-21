@@ -27,7 +27,7 @@ header {
 
 .logo a{
     color: #fff;
-    font-size: 2.5em;
+    font-size: 2.5rem;
     font-weight: 700;
 }
 
@@ -291,7 +291,7 @@ nav ul li a {
 
 .detail {
     background: url(../img/fond_formulaire.jpg) center/cover no-repeat;
-    padding: 15px 5px;
+    padding: 20% 5px;
     color: #fff;
 }
 
@@ -458,7 +458,6 @@ nav ul li a {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 card par ligne */
     gap: 20px;
-    padding-top: 30px;
 }
 
 .personne-card {

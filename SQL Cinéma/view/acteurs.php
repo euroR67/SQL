@@ -10,7 +10,7 @@
     <div class="banniere-acteurs">
         <h2><?= $titre_secondaire ?></h2>
     </div>
-    <div class="top4">
+    <div class="detail">
         <div class="personne-container">
             <?php foreach ($requeteActeurs->fetchAll() as $acteur) { ?>
                 <div class="personne-card">
