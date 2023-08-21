@@ -44,11 +44,12 @@
                                 $acteurNomPrenomArray = !empty($film["acteurs"]) ? explode(',', $film["acteurs"]) : []; // Convertir la chaîne en un tableau de noms/prénoms d'acteurs
                                 
                                 if (!empty($acteursArray)) {
+                                    $i = 0;
                                     foreach ($acteursArray as $key => $acteurId) {
                                         $acteurNomPrenom = $acteurNomPrenomArray[$key]; // Récupérer le nom/prénom de l'acteur correspondant
-                                        
                                         echo '<a class="yellow-link" href="index.php?action=detailActeur&id=' . $acteurId . '">' . $acteurNomPrenom . '</a>';
-                                        
+                                        $i ++;
+                                        if ($i>=2) { break;}
                                         if ($key < count($acteursArray) - 1) {
                                             echo ', '; // Ajouter une virgule sauf pour le dernier acteur
                                         }

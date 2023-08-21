@@ -250,15 +250,46 @@
             $genre = $requeteGenre->fetch();
             // on prépare la requête qui va nous permettre de récupérer les films du genre
             $requeteFilmParGenre = $pdo->prepare("
-                            SELECT f.id_film,
+                            SELECT
                             f.titre,
-                            YEAR(date_sortie) AS annee,
-                            CONCAT(FLOOR(duree_minute / 60), 'h', LPAD(MOD(duree_minute, 60), 2, '0')) AS duree,
+                            YEAR(f.date_sortie) AS annee,
+                            CONCAT(FLOOR(f.duree_minute / 60), 'h', LPAD(MOD(f.duree_minute, 60), 2, '0')) AS duree,
+                            f.note,
                             f.affiche,
-                            f.note
-                            FROM FILM f
-                            INNER JOIN contenir c ON f.id_film = c.id_film
-                            WHERE c.id_genre = :id;
+                            f.id_film,
+                            CONCAT(r.nom, ' ', r.prenom) AS info_realisateur,
+                            (
+                                SELECT GROUP_CONCAT(p1.nom, ' ', p1.prenom)
+                                FROM personne p1
+                                JOIN acteur a1 ON p1.id_personne = a1.id_personne
+                                JOIN jouer j1 ON a1.id_acteur = j1.id_acteur
+                                WHERE j1.id_film = f.id_film        
+                            ) AS acteurs,
+                            (
+                                SELECT GROUP_CONCAT(a1.id_acteur)
+                                FROM personne p1
+                                JOIN acteur a1 ON p1.id_personne = a1.id_personne
+                                JOIN jouer j1 ON a1.id_acteur = j1.id_acteur
+                                WHERE j1.id_film = f.id_film
+                            ) AS acteurs_ids,
+                            (
+                                SELECT GROUP_CONCAT(g1.libelle SEPARATOR ', ')
+                                FROM genre g1
+                                JOIN contenir c1 ON g1.id_genre = c1.id_genre
+                                WHERE c1.id_film = f.id_film
+                            ) AS genres,
+                            (
+                                SELECT GROUP_CONCAT(c1.id_genre)
+                                FROM contenir c1
+                                WHERE c1.id_film = f.id_film
+                            ) AS genres_ids,
+                            rd.id_realisateur
+                        FROM film AS f
+                        JOIN realisateur AS rd ON f.id_realisateur = rd.id_realisateur
+                        JOIN personne AS r ON rd.id_personne = r.id_personne
+                        GROUP BY f.id_film
+                        HAVING FIND_IN_SET(:id, genres_ids)
+                        ORDER BY f.date_sortie DESC;
             ");
             $requeteFilmParGenre->execute(["id" => $id]);
 

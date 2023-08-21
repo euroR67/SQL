@@ -291,7 +291,7 @@ nav ul li a {
 
 .detail {
     background: url(../img/fond_formulaire.jpg) center/cover no-repeat;
-    padding: 20% 5px;
+    padding: 15px;
     color: #fff;
 }
 
@@ -598,6 +598,109 @@ nav ul li a {
 
 /* =================== fin DETADETAILROLE.PHP =================== */
 
+/* =================== début AJOUTFILM.PHP =================== */
+
+.add-container {
+    background-image: url(../img/fond_formulaire.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #fff;
+    padding: 15px;
+}
+
+.add-container  h1 {
+    font-size: 1.75rem;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-block: 15px;
+}
+
+form select , input , textarea{
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #1F1E24;
+    color: #A3A3A3;
+    box-shadow: 0px 2px 5px #050505;
+    border: none;
+    border-bottom: 2px solid #e4d90481;
+    outline: none;
+    transition: all 0.5s ease;
+    width: 100%;
+}
+
+form select:focus , input:focus , textarea:focus {
+    border-bottom: 2px solid #e4d804;
+}
+
+form label , p{
+    color: #c4c4c4;
+}
+
+.custom-file-upload {
+    display: flex;
+    align-content: center;
+    width: fit-content;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #1F1E24;
+    color: #c4c4c4;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0px 2px 5px #050505;
+}
+
+.upload , .add_role{
+    width: fit-content;
+}
+
+.custom-file-upload:hover {
+    background-color: #2c2c2c;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload svg {
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.ajouter {
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #1F1E24;
+    color: #fff;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0px 2px 2px #050505;
+    font-size: 1rem;
+}
+
+.ajouter:hover {
+    background-color: #2c2c2c;
+}
+
+.addBtn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #1F1E24;
+    color: #c4c4c4;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0px 2px 5px #050505;
+}
+/* =================== fin AJOUTFILM.PHP =================== */
 
 /* =================== DEBUT FOOTER =================== */
 
