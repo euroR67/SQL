@@ -5,10 +5,6 @@
 ?>
 
 <main>
-    
-    <div class="add-container">
-        <h1><?= $titre_secondaire ?></h1>
-
         <?php 
         // On vérifie si le tableau "errors" est vide ou pas
             if(isset($_SESSION["errors"]) && !empty($_SESSION["errors"])){?>
@@ -18,21 +14,27 @@
                 <?php
                 $_SESSION["errors"]=[];
             } ?>
-
+    <div class="banniere">
+        <h2><?= $titre_secondaire ?></h2>
+    </div>
+    <div class="add-container">
         <form action="index.php?action=ajouterFilm" method="post" enctype="multipart/form-data">
             <p>
                 <label>
-                    <input placeholder="Titre du film *" type="text" name="titre" required>
+                Titre du film : *
+                    <input type="text" name="titre" required>
                 </label>
             </p>
             <p>
                 <label>
-                    <input type="number" id="number" placeholder="Durée en minutes *" name="duree_minute" required>
+                Durée en minutes : *
+                    <input type="number" id="number" name="duree_minute" required>
                 </label>
             </p>
             <p>
                 <label>
-                    <textarea placeholder="Synopsis *" name="synopsis" cols="30" rows="10" required></textarea>
+                Synopsis : *
+                    <textarea name="synopsis" cols="30" rows="10" required></textarea>
                 </label>
             </p>
             <p>
@@ -54,13 +56,14 @@
             </p>
             <p>Affiche : *
                 <label class="custom-file-upload">
-                    <input type="file" name="affiche" class="file" required>
+                    <input type="file" name="affiche" class="file" onchange="updateFileName(this)" required>
                     <svg class="upload" xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512">
                         <style>svg{fill:#a3a3a3}</style>
                         <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM385 231c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-71-71V376c0 13.3-10.7 24-24 24s-24-10.7-24-24V193.9l-71 71c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L239 119c9.4-9.4 24.6-9.4 33.9 0L385 231z"/>
                     </svg>
                     <span>Choisir un fichier</span>
                 </label>
+                <span id="file-name"></span>
             </p>
             <p>
                 <label>
@@ -105,16 +108,16 @@
             
             <p>
                 <label>
-                    Genre :
+                    Genre : *
                     <select name="genres[]" required multiple>
                         <?php foreach($requeteListGenre->fetchAll() as $genre) { 
                         ?>
                             <option value="<?= $genre["libelle"] ?>"><?= $genre["libelle"] ?></option>
                         <?php } ?>
                     </select>
-                </label>
+                </label><br>
+                <span class="ctrl">Maintenir CTRL(control) pour sélectionner plusieurs genres</span>
             </p>
-            
             <p>
                 <input class="ajouter" type="submit" name="submit" value="Ajouter le film">
             </p>

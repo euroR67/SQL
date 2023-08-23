@@ -14,8 +14,8 @@
         <!-- Section des top 4 films -->
         <div class="top4">
             <h2>LES FILMS DU MOMENT</h2>
-            <?php foreach ($requete->fetchAll() as $film) { ?>
             <div class="card-container">
+            <?php foreach ($requete->fetchAll() as $film) { ?>
                 <div class="card-top4">
                     <a href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">
                         <img src="public/img/<?= $film["affiche"] ?>" alt="Word War Z">
@@ -34,6 +34,9 @@
                 </div> 
             <?php } ?>
             </div>
+        </div>
+        <div class="see-more">
+            <a href="index.php?action=listFilms">Découvrir tout les films</a>
         </div>
 
     </main>

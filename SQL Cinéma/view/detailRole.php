@@ -7,6 +7,7 @@
 ?>
 
 <main>
+    <div class="banniere-casting"></div>
     <div class="detail">
         <h2 class="titre-casting">Le rôle de <span class="yellow-link"><?= $titre_secondaire ?></span> à été incarné par le/les acteurs/actrices suivant :</h2>
         <div class="casting-container">

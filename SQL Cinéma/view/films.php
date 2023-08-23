@@ -9,6 +9,7 @@
         <h2><?= $titre_secondaire ?></h2>
     </div>
     <div class="detail">
+        <div class="card-container">
         <?php foreach ($requete->fetchAll() as $film) { ?>
             <div class="card">
                 <a href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">
@@ -66,6 +67,7 @@
                 </div>
             </div> 
         <?php } ?>
+        </div>
     </div>
 
 </main>

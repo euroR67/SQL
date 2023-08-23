@@ -46,19 +46,37 @@ document.addEventListener('DOMContentLoaded', function() {
   const subMenu = subButton.nextElementSibling;
   const angleDown = document.querySelector('#angle-down');
 
-  subButton.addEventListener('click', function() {
-      const computedStyle = window.getComputedStyle(subMenu);
-      const currentMaxHeight = computedStyle.getPropertyValue('max-height');
+  subButton.addEventListener('click', function(event) {
+    event.stopPropagation(); // Empêche la propagation du clic vers le document
+    const computedStyle = window.getComputedStyle(subMenu);
+    const currentMaxHeight = computedStyle.getPropertyValue('max-height');
 
-      if (currentMaxHeight === '0px') {
-          subMenu.style.maxHeight = subMenu.scrollHeight + 'px';
-          angleDown.style.transform = 'rotate(180deg)';
-      } else {
-          subMenu.style.maxHeight = '0px';
-          angleDown.style.transform = 'rotate(0deg)';
-      }
+    if (currentMaxHeight === '0px') {
+      subMenu.style.pointerEvents = 'all';
+      subMenu.style.opacity = '1';
+      subMenu.style.maxHeight = subMenu.scrollHeight + 'px';
+      angleDown.style.transform = 'rotate(180deg)';
+    } else {
+      subMenu.style.maxHeight = '0px';
+      subMenu.style.pointerEvents = 'none';
+      subMenu.style.opacity = '0';
+      angleDown.style.transform = 'rotate(0deg)';
+    }
+  });
+
+  // Ajouter un gestionnaire de clic pour l'ensemble du document
+  document.addEventListener('click', function(event) {
+    const isInsideSubMenu = subMenu.contains(event.target);
+    
+    if (!isInsideSubMenu) {
+      subMenu.style.maxHeight = '0px';
+      subMenu.style.pointerEvents = 'all';
+      subMenu.style.opacity = '0';
+      angleDown.style.transform = 'rotate(0deg)';
+    }
   });
 });
+
 
 // Ajouter un champ de casting
 document.addEventListener("DOMContentLoaded", function() {
@@ -73,3 +91,13 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   addCasting();
 });
+
+// Permet d'indiquer le nom du fichier upload dans les formulaire d'ajout
+function updateFileName(input) {
+  const fileNameSpan = document.getElementById("file-name");
+  if (input.files.length > 0) {
+      fileNameSpan.textContent = input.files[0].name;
+  } else {
+      fileNameSpan.textContent = "";
+  }
+}

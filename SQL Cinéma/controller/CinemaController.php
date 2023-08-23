@@ -400,7 +400,7 @@
                 // Sinon on affiche un message d'erreur
                 else {
                     $_SESSION["errors"][] = "Le champ du nom du genre ne peut pas être vide.";
-                    header("Location:index.php?action=listFilm_ajoutGenre");;die;
+                    header("Location:index.php?action=listFilm_ajoutGenre");die;
                 }
             }
            
