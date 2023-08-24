@@ -15,7 +15,9 @@
             <?php foreach ($requeteActeurs->fetchAll() as $acteur) { ?>
                 <div class="personne-card">
                     <a href="index.php?action=detailActeur&id=<?= $acteur["id_acteur"] ?>">
-                        <img src="public/img/<?= $acteur["photo"] ?>" alt="">
+                        <figure>
+                            <img src="public/img/<?= $acteur["photo"] ?>" alt="<?= $acteur["info_acteur"] ?>">
+                        </figure>
                     </a>
                     <div class="nom-personne">
                         <h2><?= $acteur["info_acteur"] ?></h2>

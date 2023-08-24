@@ -13,7 +13,9 @@
         <?php foreach ($requeteFilmParGenre->fetchAll() as $film) { ?>
             <div class="card">
                 <a href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">
-                    <img src="public/img/<?= $film["affiche"] ?>" alt="<?= $film["titre"] ?>">
+                    <figure>
+                        <img src="public/img/<?= $film["affiche"] ?>" alt="<?= $film["titre"] ?>">
+                    </figure>
                 </a>
                 <div class="film-info">
                     <div class="titre-date">

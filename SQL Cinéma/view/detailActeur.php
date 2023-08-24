@@ -11,7 +11,9 @@
     <div class="detail">
         <?php $acteur = $requeteActeur->fetch() ?>
         <div class="info">
-            <img src="public/img/<?= $acteur["photo"] ?>" alt="">
+            <figure>
+                <img src="public/img/<?= $acteur["photo"] ?>" alt="<?= $acteur["info_acteur"] ?>">
+            </figure>
             <div class="personne-info">
                 <h2><?= $acteur["info_acteur"] ?></h2>
                 <p>Date de naissance : <i class="uil uil-calendar-alt"></i> <?= $acteur["date_de_naissance"] ?></p>

@@ -20,7 +20,9 @@
             <?php foreach ($requete->fetchAll() as $film) { ?>
                 <div class="card-top4">
                     <a href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">
-                        <img src="public/img/<?= $film["affiche"] ?>" alt="Word War Z">
+                        <figure>
+                            <img src="public/img/<?= $film["affiche"] ?>" alt="<?= $film["titre"] ?>">
+                        </figure>
                     </a>
                     <div class="top4-titre-date">
                         <h2><?= $film["titre"] ?></h2>

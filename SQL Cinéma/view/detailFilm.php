@@ -12,7 +12,9 @@
         <?php $film = $requeteFilm->fetch() ?>
         
         <div class="info">
-            <img src="public/img/<?= $film["affiche"] ?>" alt="<?= $film["titre"] ?>">
+            <figure>
+                <img src="public/img/<?= $film["affiche"] ?>" alt="<?= $film["titre"] ?>">
+            </figure>
             <div class="film-info">
                 <h2><?= $film["titre"] ?></h2>
                 <p>Réalisateur :

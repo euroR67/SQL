@@ -12,7 +12,9 @@
     <div class="detail">
         <?php $realisateur = $requeteRealisateur->fetch() ?>
         <div class="info">
-            <img src="public/img/<?= $realisateur["photo"] ?>" alt="">
+            <figure>
+                <img src="public/img/<?= $realisateur["photo"] ?>" alt="<?= $realisateur["info_realisateur"] ?>">
+            </figure>
             <div class="personne-info">
                 <h2><?= $realisateur["info_realisateur"] ?></h2>
                 <p>Date de naissance : <i class="uil uil-calendar-alt"></i> <?= $realisateur["date_de_naissance"] ?></p>
