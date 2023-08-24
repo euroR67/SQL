@@ -8,7 +8,7 @@
     <div class="banniere">
         <h2><?= $titre_secondaire ?></h2>
     </div>
-    <div class="detail">
+    <div class="lists">
         <div class="card-container">
         <?php foreach ($requete->fetchAll() as $film) { ?>
             <div class="card">
@@ -60,9 +60,7 @@
                                 }
                                 ?>
                             </p>
-
                         </div>
-                        <a class="plus" href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">VOIR PLUS</a>
                     </div>
                 </div>
             </div> 

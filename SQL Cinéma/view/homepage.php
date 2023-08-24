@@ -4,11 +4,13 @@
     <main>
         <!-- Section de présentation -->
         <div class="decouverte">
-            <h3>Movflix</h3>
-            <p>Découvre les <span>films</span> du moment,<br>
-            actualités, présentations,<br>
-            & plus encore.</p>
-            <a href="index.php?action=listFilms">Découvrir</a>
+            <div class="present">
+                <h3>Movflix</h3>
+                <p>Découvre les <span>films</span> du moment,<br>
+                actualités, présentations,<br>
+                & plus encore.</p>
+                <a href="index.php?action=listFilms">Découvrir</a>
+            </div>
         </div>
 
         <!-- Section des top 4 films -->
@@ -27,8 +29,8 @@
                     <div class="top4-duree_note">
                         <p>VOSTFR</p>
                         <div>
-                            <p><i class="uil uil-clock"></i> <?= $film["duree"] ?></p>|
-                            <p><i class="uil uil-thumbs-up"></i> <?= $film["note"] ?>/5</p>
+                            <p><i class="uil uil-clock"></i> <?= $film["duree"] ?></p>
+                            <p><i class="uil uil-thumbs-up"></i> <?= $film["note"] ?>.0</p>
                         </div>
                     </div>
                 </div> 

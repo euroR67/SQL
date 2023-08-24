@@ -195,9 +195,12 @@ nav ul li a {
 
 .decouverte h3 {
     color: #e4d804;
-    margin-top: 3em;
     font-weight: 800;
     font-size: 24px;
+}
+
+.present {
+    margin-block: 3em;
 }
 
 .decouverte span {
@@ -235,17 +238,31 @@ nav ul li a {
     border: 2px solid #e4d804;
     text-transform: uppercase;
     width: fit-content;
-    margin-block: 30px;
+    display: inline-block;
 }
 
 /* =================== SECTION TOP 4 =================== */
 
 .top4 {
-    background: url(../img/fond2.jpg) center/cover no-repeat;
+    background-image: url(../img/bg_shape.png);
+    background-size: 500%;
     padding-inline: 10px;
     padding-bottom: 20px;
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+.top4::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #100e17;
+    opacity: .99;
+    z-index: -1;
 }
 
 .top4 > h2 {
@@ -259,22 +276,19 @@ nav ul li a {
 .card-container {
     display: flex;
     flex-direction: column;
-    gap: 30px;
 }
 
 .card-top4 a img {
     width: 100%;
     object-fit: cover;
-    max-height: 450px;
+    max-height: 650px;
+    border-radius: 7px;
 }
 
 .card-top4 {
     width: 90%;
     margin: auto;
-    background-color: #1d202596;
     color: #fff;
-    border-bottom: 5px solid #e4d804;
-    box-shadow: 0px 2px 5px #050505;
 }
 
 .top4-titre-date , .top4-duree_note {
@@ -282,6 +296,7 @@ nav ul li a {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+    font-size: 0.80rem;
 }
 
 .top4-duree_note div {
@@ -366,6 +381,24 @@ nav ul li a {
     align-items: center;
 }
 
+.lists {
+    background-image: url(../img/bg_shape.png);
+    position: relative;
+    padding: 20px;
+}
+
+.lists::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #100e17;
+    opacity: .99;
+    z-index: -1;
+}
+
 .duree_note div p {
     font-size: 0.80rem;
 }
@@ -401,10 +434,9 @@ nav ul li a {
     margin-inline: auto;
     background-color: #22232b89;
     margin-bottom: 20px;
-    border: 1px solid #e4d90457;
     border-radius: 10px;
     padding: 10px;
-    
+    box-shadow: 0px 2px 5px #050505;
 }
 
 .card i {
@@ -476,7 +508,8 @@ nav ul li a {
 }
 
 .personne-container {
-    width: 98%;
+    width: 100%;
+    margin:auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 card par ligne */
     gap: 20px;
@@ -566,7 +599,7 @@ nav ul li a {
 
 .banniere-genres {
     height: 300px;
-    background-image: linear-gradient(to right, rgba(4, 4, 16, 0.601), rgba(37, 36, 36, 0.266)), url(../img/banner_genres.png);
+    background-image: linear-gradient(to right, rgba(4, 4, 16, 0.601), rgba(37, 36, 36, 0.266)), url(../img/banniere_films.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -810,7 +843,10 @@ footer {
         display: grid;
         grid-template-columns: repeat(2, 1fr); /* 2 card par ligne */
         gap: 20px;
-        margin-bottom: 20px;
+    }
+
+    .top4 {
+        background-size: 250%;
     }
 
     .top4 > h2 {
@@ -836,6 +872,11 @@ footer {
         display: grid;
         grid-template-columns: repeat(3,1fr);
         gap: 20px;
+        width: 90%;
+    }
+
+    .personne-card {
+        min-width: 200px;
     }
     /* Fin ACTEURS.PHP */
 
@@ -849,6 +890,7 @@ footer {
         width: 40%;
         height: fit-content;
         object-fit: cover;
+        border-radius: 10px;
     }
     /* Fin DETAILFILM.PHP */
 
@@ -867,9 +909,30 @@ footer {
     /* Fin GENRES.PHP */
 }
 
-/* =================== VERSION DESKTOP BREAKPOINT =================== */
 
 @media screen and (min-width: 1000px) {
+    .card-container {
+        grid-template-columns: repeat(3, 1fr);
+        width: 100%;
+        margin: auto;
+    }
+    .card {
+        display: block;
+    }
+
+    .card img {
+        width: 100%;
+        height: 460px;
+        object-fit:cover;
+    }
+
+    .card .duree_note div p {
+        margin-block:5px;
+    }
+}
+
+/* =================== VERSION DESKTOP BREAKPOINT =================== */
+@media screen and (min-width: 1200px) {
     /* =================== DEBUT NAVIGATION desktop version =================== */
     .logo_burger,
     .logo_burger div,
@@ -976,8 +1039,9 @@ footer {
     /* =================== FIN SOUS MENU AJOUTER =================== */
 
     /* début HOMEPAGE.PHP desktop version */
-    .decouverte {
-        padding-left: 300px;
+    .present {
+        width: 70%;
+        margin-inline: auto;
     }
 
     .decouverte a , .see-more a{
@@ -992,10 +1056,27 @@ footer {
 
     .card-container {
         grid-template-columns: repeat(4, 1fr);
+        width: 100%;
+        margin-inline: auto;
     }
     
     /* fin HOMEPAGE.PHP */
-
+    .film-card {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 2 card par ligne */
+        gap: 20px;
+        margin-block: 50px;
+        width: 70%;
+        margin: auto;
+    }
+    .genre-container {
+        width: 60%;
+        margin: auto;
+    }
+    .casting-container {
+        width: 60%;
+        margin: auto;
+    }
     /* début DETAILFILM.PHP desktop version */
     .detail .info img:first-child {
         width: 33%;
@@ -1022,6 +1103,26 @@ footer {
     }
     /* fin DETAILFILM.PHP */
 
+    /* Début FILMS.PHP desktop version */
+    .card {
+        display: block;
+    }
+
+    .card img {
+        width: 100%;
+        height: 400px;
+        object-fit:cover;
+    }
+
+    .card .duree_note div p {
+        margin-block:5px;
+    }
+
+    .top4 {
+        background-size: 130%;
+    }
+    /* Fin FILMS.php */
+
     /* début FOOTER version desktop */
     footer {
         display: flex;
@@ -1032,5 +1133,37 @@ footer {
         display: flex;
         gap: 20px;
     }
+
+    .personne-card {
+        max-width: 80%;
+    }
     /* fin FOOTER  */
+}
+
+@media screen and (min-width: 1500px) {
+    .personne-container {
+        grid-template-columns: repeat(4, 1fr);
+        width: 80%;
+        margin-inline: auto;
+    }
+
+    .card {
+        min-width: 300px;
+    }
+}
+
+@media screen and (min-width: 1700px) {
+    .card-container {
+        grid-template-columns: repeat(4, 1fr);
+        width: 70%;
+        margin-inline: auto;
+    }
+
+    .personne-container {
+        width: 70%;
+    }
+
+    .personne-card {
+        max-width: 80%;
+    }
 }
