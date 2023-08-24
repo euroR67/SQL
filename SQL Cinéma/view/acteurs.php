@@ -31,6 +31,7 @@
 
 
 <?php 
+    $pageActeurs = 'activeLink';
     // on stock le titre de la page dans une variable
     $titre = "Liste des acteurs";
     // on stock le titre secondaire de la page dans une variable

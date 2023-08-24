@@ -77,6 +77,7 @@
 </main>
 
 <?php 
+    $pageGenre = 'activeLink';
     // on stock le titre de la page dans une variable
     $titre = "Films par genre ".$genre["libelle"]."";
     // on stock le titre secondaire de la page dans une variable

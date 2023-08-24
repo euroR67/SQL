@@ -103,6 +103,7 @@
 </main>
 
 <?php 
+    $addActeur = 'activeLink';
     // on stock le titre de la page dans une variable
     $titre = "Ajouter un acteur";
     // on stock le titre secondaire de la page dans une variable

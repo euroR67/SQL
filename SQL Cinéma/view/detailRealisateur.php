@@ -12,9 +12,7 @@
     <div class="detail">
         <?php $realisateur = $requeteRealisateur->fetch() ?>
         <div class="info">
-            <figure>
-                <img src="public/img/<?= $realisateur["photo"] ?>" alt="<?= $realisateur["info_realisateur"] ?>">
-            </figure>
+            <img src="public/img/<?= $realisateur["photo"] ?>" alt="<?= $realisateur["info_realisateur"] ?>">
             <div class="personne-info">
                 <h2><?= $realisateur["info_realisateur"] ?></h2>
                 <p>Date de naissance : <i class="uil uil-calendar-alt"></i> <?= $realisateur["date_de_naissance"] ?></p>
@@ -38,6 +36,7 @@
 
 
 <?php 
+    $pageRealisateur = 'activeLink';
     // on stock le titre de la page dans une variable
     $titre = "Détail du realisateur " . $realisateur["info_realisateur"];
     // on stock le titre secondaire de la page dans une variable

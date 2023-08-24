@@ -74,6 +74,7 @@
 </main>
 
 <?php 
+    $pageFilms = 'activeLink';
     // on stock le titre de la page dans une variable
     $titre = "Liste des films";
     // fin d'enregistrement

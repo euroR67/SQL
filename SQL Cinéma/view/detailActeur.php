@@ -11,9 +11,7 @@
     <div class="detail">
         <?php $acteur = $requeteActeur->fetch() ?>
         <div class="info">
-            <figure>
-                <img src="public/img/<?= $acteur["photo"] ?>" alt="<?= $acteur["info_acteur"] ?>">
-            </figure>
+            <img src="public/img/<?= $acteur["photo"] ?>" alt="<?= $acteur["info_acteur"] ?>">
             <div class="personne-info">
                 <h2><?= $acteur["info_acteur"] ?></h2>
                 <p>Date de naissance : <i class="uil uil-calendar-alt"></i> <?= $acteur["date_de_naissance"] ?></p>
@@ -36,6 +34,7 @@
 </main>
 
 <?php 
+    $pageActeur = 'activeLink';
     // on stock le titre de la page dans une variable
     $titre = "Détail de l'acteur " . $acteur["info_acteur"];
     // on stock le titre secondaire de la page dans une variable

@@ -74,6 +74,7 @@
 </main>
 
 <?php 
+    $addRealisateur = 'activeLink';
     // on stock le titre de la page dans une variable
     $titre = "Ajouter un réalisateur";
     // on stock le titre secondaire de la page dans une variable

@@ -79,18 +79,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // Ajouter un champ de casting
-document.addEventListener("DOMContentLoaded", function() {
+// Utilisez l'événement "load" pour attendre que tous les éléments soient chargés
+window.addEventListener("load", function() {
   function addCasting() {
     const addCast = document.querySelector(".addBtn");
     const castDiv = document.querySelector(".cast-div");
 
-    addCast.addEventListener("click", () => {
-      newCast = castDiv.querySelector(".casting").cloneNode(true);
-      castDiv.appendChild(newCast);
-    });
+    if (addCast && castDiv) { // Vérifiez si les éléments existent
+      addCast.addEventListener("click", () => {
+        newCast = castDiv.querySelector(".casting").cloneNode(true);
+        castDiv.appendChild(newCast);
+      });
+    }
   }
   addCasting();
 });
+
 
 // Permet d'indiquer le nom du fichier upload dans les formulaire d'ajout
 function updateFileName(input) {

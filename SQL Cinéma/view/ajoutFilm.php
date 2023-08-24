@@ -70,7 +70,7 @@
                 </p>
                 <div class="cast-div">
                     <div class="add_casting">
-                        <label for="">Casting</label>
+                        <label>Casting</label>
                         <button type="button" class="addBtn">
                             <svg class="add_role" xmlns="http://www.w3.org/2000/svg" height="0.875em" viewBox="0 0 512 512">
                                 <style>svg{fill:#a3a3a3}</style>
@@ -136,6 +136,7 @@
 </main>
 
 <?php 
+    $addFilm = 'activeLink';
     // on stock le titre de la page dans une variable
     $titre = "Ajouter un film";
     // on stock le titre secondaire de la page dans une variable

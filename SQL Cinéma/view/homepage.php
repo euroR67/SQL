@@ -48,6 +48,8 @@
 
 <?php 
 
+
+    $home = 'activeLink';
     $titre = "Accueil";
     $titre_secondaire = "LES FILMS DU MOMENT";
     $contenu = ob_get_clean();

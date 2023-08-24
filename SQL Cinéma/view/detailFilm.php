@@ -12,9 +12,7 @@
         <?php $film = $requeteFilm->fetch() ?>
         
         <div class="info">
-            <figure>
-                <img src="public/img/<?= $film["affiche"] ?>" alt="<?= $film["titre"] ?>">
-            </figure>
+            <img src="public/img/<?= $film["affiche"] ?>" alt="<?= $film["titre"] ?>">
             <div class="film-info">
                 <h2><?= $film["titre"] ?></h2>
                 <p>Réalisateur :
@@ -60,6 +58,7 @@
 
 
 <?php 
+    $pageDetail = 'activeLink';
     // on stock le titre de la page dans une variable
     $titre = "Détail du film " . $film["titre"];
     // on stock le titre secondaire de la page dans une variable

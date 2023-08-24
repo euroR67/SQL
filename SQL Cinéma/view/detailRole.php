@@ -31,6 +31,7 @@
 </main>
 
 <?php 
+    $pageRole = 'activeLink';
     // on stock le titre de la page dans une variable
     $titre = $nom_role[0];
     // on stock le titre secondaire de la page dans une variable
