@@ -19,37 +19,48 @@
     </div>
     <div class="add-container">
         <form action="index.php?action=ajouterRole" method="post" enctype="multipart/form-data">
-            <div class="cast-div">
-                <button type="button" class="addBtn">Plus de casting</button>
-                <label>
-                    Rôle :
-                    <input type="text" name="role_jouer[]" >
-                </label>
-                <p class="casting">
+            <div class="form-element">
+                <div class="cast-div">
                     <label>
-                        Dans le film :
-                        <select name="films[]">
-                                <option value="none">None</option>
-                            <?php foreach($requeteListFilm->fetchAll() as $film) { ?>
-                                <option value="<?= $film["titre"] ?>"><?= $film["titre"] ?></option>
-                            <?php } ?>
-                        </select>
+                        Rôle :
+                        <input type="text" name="role_jouer[]" >
                     </label>
-                    <br>
-                    <label>
-                        Par l'acteur :
-                        <select name="acteurs[]">
-                                <option value="none">None</option>
-                            <?php foreach($requeteListActeurs->fetchAll() as $acteur) { ?>
-                                <option value="<?= $acteur["info_acteur"] ?>"><?= $acteur["info_acteur"] ?></option>
-                            <?php } ?>
-                        </select>
-                    </label>
+                    <div class="add_casting">
+                        <label for="">Casting</label>
+                        <button type="button" class="addBtn">
+                            <svg class="add_role" xmlns="http://www.w3.org/2000/svg" height="0.875em" viewBox="0 0 512 512">
+                                <style>svg{fill:#a3a3a3}</style>
+                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/>
+                            </svg>
+                            de casting
+                        </button>
+                    </div>
+                    <p class="casting">
+                        <label>
+                            Dans le film :
+                            <select name="films[]">
+                                    <option value="none">None</option>
+                                <?php foreach($requeteListFilm->fetchAll() as $film) { ?>
+                                    <option value="<?= $film["titre"] ?>"><?= $film["titre"] ?></option>
+                                <?php } ?>
+                            </select>
+                        </label>
+                        <br>
+                        <label>
+                            Par l'acteur :
+                            <select name="acteurs[]">
+                                    <option value="none">None</option>
+                                <?php foreach($requeteListActeurs->fetchAll() as $acteur) { ?>
+                                    <option value="<?= $acteur["info_acteur"] ?>"><?= $acteur["info_acteur"] ?></option>
+                                <?php } ?>
+                            </select>
+                        </label>
+                    </p>
+                </div>
+                <p>
+                    <input class="ajouter" type="submit" name="submit" value="Ajouter le rôle">
                 </p>
             </div>
-        <p>
-            <input class="ajouter" type="submit" name="submit" value="Ajouter le rôle">
-        </p>
         </form>
     </div>
 

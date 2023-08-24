@@ -21,9 +21,10 @@
                     </div>
                     <div class="duree_note">
                         <div>
-                            <p><?= $film["annee"] ?> |
-                            <i class="uil uil-clock"></i> <?= $film["duree"] ?> |
-                            <i class="uil uil-thumbs-up"></i> <?= $film["note"] ?>/5 |
+                            <p>
+                            <i class="uil uil-calendar-alt"></i> <?= $film["annee"] ?> / 
+                            <i class="uil uil-clock"></i> <?= $film["duree"] ?> /
+                            <i class="uil uil-thumbs-up"></i> <?= $film["note"] ?>.0 /
                             <?php
                                 $genresArray = explode(',', $film["genres_ids"]);
                                 $genresLibelleArray = explode(',', $film["genres"]); // Convertir la chaîne en un tableau de libellés de genres
