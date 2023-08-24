@@ -56,13 +56,13 @@
                 <li class="menu-item"><a class="<?= $pageRealisateurs ?>" href="index.php?action=listRealisateurs"><i class="uil uil-user"></i> Realisateurs</a></li>
                 <li class="menu-item"><a class="<?= $pageGenres ?>" href="index.php?action=listGenres"><i class="uil uil-browser"></i> Genres</a></li>
             </ul>
-            <div class="social-network">
+            <ul class="social-network">
                 <li><i class="uil uil-facebook-f"></i></li>
                 <li><i class="uil uil-instagram"></i></li>
                 <li><i class="uil uil-twitter"></i></li>
                 <li><i class="uil uil-github"></i></li>
                 <li><i class="uil uil-youtube"></i></li>
-            </div>
+            </ul>
         </nav>
         <!-- Fond obscure lorsque le menu burger est ouvert -->
         <div class="overlay"></div>
