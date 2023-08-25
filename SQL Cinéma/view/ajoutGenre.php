@@ -13,7 +13,15 @@
             <!-- On réinitialise le tableau "errors" dans la session -->
             <?php
             $_SESSION["errors"]=[];
-        } ?>
+        } 
+        if(isset($_SESSION["success"]) && !empty($_SESSION["success"])){?>
+            <!-- on echo  -->
+            <p><?= $_SESSION["success"][0] ?></p>
+            <!-- On réinitialise le tableau "errors" dans la session -->
+            <?php
+            $_SESSION["success"]=[];
+        } 
+    ?>
     <div class="banniere">
         <h2><?= $titre_secondaire ?></h2>
     </div>

@@ -384,7 +384,8 @@
                             "genre" => $_POST['libelle']
                         ]);
                     }
-                    header("Location:index.php?action=listGenres");
+                    $_SESSION["success"][] = "Le genre a été ajouté avec succès.";
+                    header("Location:index.php?action=listFilm_ajoutGenre");die;
                 } 
                 // Si le champ libelle n'est pas vide et que aucun film n'a été selectionner on insère que le genre dans la table 
                 else if($libelle && !$TableCheck) {
@@ -395,7 +396,8 @@
                     $requeteAjoutGenre->execute([
                         'libelle' => $_POST['libelle']
                     ]);
-                    header("Location:index.php?action=listGenres");
+                    $_SESSION["success"][] = "Le genre a été ajouté avec succès.";
+                    header("Location:index.php?action=listFilm_ajoutGenre");die;
                 }
                 // Sinon on affiche un message d'erreur
                 else {
@@ -511,7 +513,8 @@
                                 ]);
                             }
                         }
-                        header("Location:index.php?action=listFilms");
+                        $_SESSION["success"][] = "Le film a été ajouté avec succès.";
+                        header("Location:index.php?action=listRealisateurGenre_ajoutFilm");die;
                     }
                 } else {
                     if (!in_array($extension, $extensions)) {
@@ -592,7 +595,7 @@
                 $extension = strtolower(end($tabExtension)); // Stock l'extension
         
                 //Tableau des extensions acceptées
-                $extensions = ['jpg', 'png', 'jpeg', 'gif'];
+                $extensions = ['jpg', 'png', 'jpeg', 'gif', 'wepb'];
                 // Taille maximale acceptée (en bytes)
                 $maxSize = 40000000;
 
@@ -628,16 +631,19 @@
                             "id_personne" => $newPersonId
                         ]);
                         
-                        $newId = $pdo->lastInsertId();
-                        header("Location:index.php?action=listRealisateurs");
+                        $_SESSION["success"][] = "Le réalisateur a été ajouté avec succès.";
+                        header("Location:index.php?action=ajouterRealisateur"); die;
                     }
                 } else {
                     if (!in_array($extension, $extensions)) {
-                        $erreur_message = "L'extension du fichier n'est pas valide. Les extensions acceptées sont : " . implode(", ", $extensions);
+                        $_SESSION["errors"][] = "L'extension du fichier n'est pas valide. Les extensions acceptées sont : " . implode(", ", $extensions);
+                        header("Location:index.php?action=ajouterRealisateur"); die;
                     } elseif ($size > $maxSize) {
-                        $erreur_message = "Le fichier est trop volumineux. La taille maximale autorisée est " . ($maxSize / 1000) . " Ko.";
+                        $_SESSION["errors"][] = "Le fichier est trop volumineux. La taille maximale autorisée est " . ($maxSize / 1000) . " Ko.";
+                        header("Location:index.php?action=ajouterRealisateur"); die;
                     } elseif ($error !== 0) {
-                        $erreur_message = "Une erreur s'est produite lors du téléchargement du fichier.";
+                        $_SESSION["errors"][] = "Une erreur s'est produite lors du téléchargement du fichier.";
+                        header("Location:index.php?action=ajouterRealisateur"); die;
                     }
                 }
             }
@@ -662,7 +668,7 @@
                 $size = $_FILES['photo']['size'];
                 $error = $_FILES['photo']['error'];
                 
-                $extensions = ['jpg', 'png', 'jpeg', 'gif'];
+                $extensions = ['jpg', 'png', 'jpeg', 'gif', 'webp'];
                 $maxSize = 40000000;
         
                 $tabExtension = explode('.', $img_name);
@@ -721,16 +727,19 @@
                             }
                         }
                     }
-                    
-                    header("Location:index.php?action=listActeurs");
+                    $_SESSION["success"][] = "L'acteur/actrice a été ajouté avec succès.";
+                    header("Location:index.php?action=listFilmRole_ajoutActeur"); die;
                 } else {
                     // Gestion des erreurs liées à l'image
                     if (!in_array($extension, $extensions)) {
-                        $erreur_message = "L'extension du fichier n'est pas valide. Les extensions acceptées sont : " . implode(", ", $extensions);
+                        $_SESSION["errors"][] = "L'extension du fichier n'est pas valide. Les extensions acceptées sont : " . implode(", ", $extensions);
+                        header("Location:index.php?action=listFilmRole_ajoutActeur"); die;
                     } elseif ($size > $maxSize) {
-                        $erreur_message = "Le fichier est trop volumineux. La taille maximale autorisée est " . ($maxSize / 1000) . " Ko.";
+                        $_SESSION["errors"][] = "Le fichier est trop volumineux. La taille maximale autorisée est " . ($maxSize / 1000) . " Ko.";
+                        header("Location:index.php?action=listFilmRole_ajoutActeur"); die;
                     } elseif ($error !== 0) {
-                        $erreur_message = "Une erreur s'est produite lors du téléchargement du fichier.";
+                        $_SESSION["errors"][] = "Une erreur s'est produite lors du téléchargement du fichier.";
+                        header("Location:index.php?action=listFilmRole_ajoutActeur"); die;
                     }
                 }
             }
@@ -804,7 +813,8 @@
                                 "id_role" => $newRoleId // Utilisation du nouvel ID de rôle
                             ]);
                         }
-                        header("Location:index.php?action=listRoles");
+                        $_SESSION["success"][] = "Le rôle a été ajouté avec succès. ";
+                        header("Location:index.php?action=listActeurFilm_ajoutRole");;die;
                     } else {
                         // Si le champ rôle n'est pas renseigné on renvoi un message d'erreur
                         $_SESSION["errors"][] = "Veuillez renseigner le nom du rôle";

@@ -50,6 +50,28 @@ svg {
     color: #e4d904;
 }
 
+.success {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background-color: #58585875;
+    width: fit-content;
+    padding: 10px;
+    margin: auto;
+    border-left: 9px solid rgb(3, 167, 3);
+}
+
+.errors {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    background-color: #58585875;
+    width: fit-content;
+    padding: 10px;
+    margin: auto;
+    border-left: 9px solid rgb(190, 4, 4);
+}
+
 /* =================== FIN HEADER =================== */
 
 /* =================== DEBUT BURGER OPEN =================== */
