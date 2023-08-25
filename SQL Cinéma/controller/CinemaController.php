@@ -159,10 +159,11 @@
             $requeteRealisateur->execute(["id" => $id]);
 
             $requeteFilmsRealisateur = $pdo->prepare("
-                            SELECT f.id_film, f.titre
+                            SELECT f.id_film, f.titre, YEAR(f.date_sortie) AS annee
                             FROM film f
                             INNER JOIN realisateur r ON r.id_realisateur = f.id_realisateur
                             WHERE f.id_realisateur = :id
+                            ORDER BY f.date_sortie DESC;
             ");
             $requeteFilmsRealisateur->execute(["id" => $id]);
 
@@ -202,11 +203,12 @@
             $requeteActeur->execute(["id" => $id]);
 
             $requeteFilmsActeur = $pdo->prepare("
-                            SELECT f.id_film, f.titre
+                            SELECT f.id_film, f.titre, YEAR(f.date_sortie) AS annee
                             FROM film f
                             INNER JOIN jouer j ON j.id_film = f.id_film
                             INNER JOIN acteur a ON a.id_acteur = j.id_acteur
                             WHERE a.id_acteur = :id
+                            ORDER BY f.date_sortie DESC;
             ");
             $requeteFilmsActeur->execute(["id" => $id]);
 

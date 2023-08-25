@@ -21,7 +21,7 @@
                     <?php foreach($requeteFilmsRealisateur->fetchAll() as $film) { ?>
                         <li>
                             <a class="yellow-link" href="index.php?action=detailFilm&id=<?= $film["id_film"] ?>">
-                                <?= $film["titre"] ?>
+                                <?= $film["titre"] ?> - <?= $film["annee"]?>
                             </a>
                         </li>
                     <?php } ?>
